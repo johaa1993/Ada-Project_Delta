@@ -23,20 +23,20 @@ package CBR is
    use Ada.Strings.Fixed;
 
    package Float_Vectors is new Vectors (Positive, Float);
-   package Integer_Vectors is new Vectors (Natural, Integer);
+   package Class_Vectors is new Vectors (Natural, Natural);
 
    type Distance_Type is (Unknown_Distance_Type, Canberra_Type, Euclidean_Type, Euclidean2_Type, Manhattan_Type);
 
    type Asset is record
       Time : Natural := 0;
-      Class : Integer := 0;
+      Class : Natural := 0;
       Prominent : Integer := 0;
       Point : Float_Vectors.Vector;
       Dis : Float_Vectors.Vector;
    end record;
 
    type Prominent is record
-      P : Integer_Vectors.Vector;
+      P : Class_Vectors.Vector;
    end record;
 
    package Prominent_Vectors is new Vectors (Positive, Prominent);
@@ -61,5 +61,9 @@ package CBR is
    procedure Init_Prominent (X : in out Prominent_Vectors.Vector; Class_Count : Count_Type; K_Count : Count_Type);
    procedure Put (X : Prominent_Vectors.Vector);
    procedure Write_Prominent (X : Prominent_Vectors.Vector; Name : String);
+   function Max_Class (X : Asset_Vectors.Vector) return Natural;
+
+   function Dim_Count_Min (X : Asset_Vectors.Vector) return Natural;
+   function Dim_Count_Max (X : Asset_Vectors.Vector) return Natural;
 
 end;

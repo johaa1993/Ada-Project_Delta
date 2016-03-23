@@ -111,16 +111,16 @@ package body CBR is
       end loop;
    end;
 
-   procedure Put (X : Integer_Vectors.Vector; Width : Field) is
+   procedure Put (X : Class_Vectors.Vector; Width : Field) is
    begin
-      for E : Integer of X loop
+      for E : Natural of X loop
          Put (E, Width);
       end loop;
    end;
 
-   procedure Put (F : File_Type; X : Integer_Vectors.Vector) is
+   procedure Put (F : File_Type; X : Class_Vectors.Vector) is
    begin
-      for E : Integer of X loop
+      for E : Natural of X loop
          Put (F, E, 3);
       end loop;
    end;
@@ -248,12 +248,12 @@ package body CBR is
    end;
 
    procedure Calc_Prominent (X : in out Asset_Vectors.Vector) is
-      S : Integer_Vectors.Vector;
+      S : Class_Vectors.Vector;
       M : Integer := -1;
       T : Integer := 0;
    begin
       S.Set_Length (10);
-      for E : Integer of S loop
+      for E : Natural of S loop
          E := 0;
       end loop;
       for E : Asset of X loop
@@ -280,10 +280,37 @@ package body CBR is
       X.Set_Length (K_Count);
       for E : Prominent of X loop
          E.P.Set_Length (Class_Count);
-         for E1 : Integer of E.P loop
+         for E1 : Natural of E.P loop
             E1 := 0;
          end loop;
       end loop;
+   end;
+
+   function Max_Class (X : Asset_Vectors.Vector) return Natural is
+      S : Natural := 0;
+   begin
+      for E : Asset of X loop
+         S := Natural'Max (S, E.Class);
+      end loop;
+      return S;
+   end;
+
+   function Dim_Count_Max (X : Asset_Vectors.Vector) return Natural is
+      S : Natural := 0;
+   begin
+      for E : Asset of X loop
+         S := Natural'Max (S, Natural (E.Point.Length));
+      end loop;
+      return S;
+   end;
+
+   function Dim_Count_Min (X : Asset_Vectors.Vector) return Natural is
+      S : Natural := Natural'Last;
+   begin
+      for E : Asset of X loop
+         S := Natural'Min (S, Natural (E.Point.Length));
+      end loop;
+      return S;
    end;
 
 end;

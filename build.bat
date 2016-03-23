@@ -1,13 +1,13 @@
 :loop
 @cls
-if exist bin\ksort.exe del /F bin\ksort.exe
+if exist bin\info.exe del /F bin\info.exe
 @gprbuild main.gpr -p
-@if exist bin\ksort.exe (
+@if exist bin\info.exe (
   cd bin
-  ksort.exe D.csv P.csv 123
+  info.exe D.csv
   cd ..
 ) else (
-  echo "No main.exe try again?"
+  echo "No info.exe try again?"
 )
 
 @pause
