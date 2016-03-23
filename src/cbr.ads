@@ -8,10 +8,11 @@ with Ada.Containers.Vectors;
 with Ada.Containers.Indefinite_Vectors;
 with Ada.Assertions;
 with Ada.Strings.Fixed;
+with Ada.Numerics.Elementary_Functions;
 
 package CBR is
 
-
+   use Ada.Numerics.Elementary_Functions;
    use Ada.Numerics.Real_Arrays;
    use Ada.Text_IO;
    use Ada.Float_Text_IO;
@@ -23,6 +24,8 @@ package CBR is
 
    package Float_Vectors is new Vectors (Positive, Float);
    package Integer_Vectors is new Vectors (Natural, Integer);
+
+   type Distance_Type is (Unknown_Distance_Type, Canberra_Type, Euclidean_Type, Euclidean2_Type, Manhattan_Type);
 
    type Asset is record
       Time : Natural := 0;
@@ -48,7 +51,7 @@ package CBR is
    procedure Put (F : File_Type; X : Float_Vectors.Vector);
    procedure Put (X : Asset_Vectors.Vector);
    procedure Write (X : Asset_Vectors.Vector; Name : String);
-   procedure Calc_Distance (X : in out Asset_Vectors.Vector; Y : Asset_Vectors.Vector);
+   procedure Calc_Distance (X : in out Asset_Vectors.Vector; Y : Asset_Vectors.Vector; Dis_Type : Distance_Type);
    procedure Write_Distance (X : Asset_Vectors.Vector; Name : String);
    procedure Read_Distance (X : out Asset_Vectors.Vector; Name : String);
    procedure Put_Dis (X : Asset_Vectors.Vector);

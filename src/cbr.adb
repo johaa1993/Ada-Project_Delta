@@ -1,10 +1,37 @@
 package body CBR is
 
-   function Calc_Distance (X : Float_Vectors.Vector; Y : Float_Vectors.Vector) return Float is
+   function Calc_Manhattan_Distance (X : Float_Vectors.Vector; Y : Float_Vectors.Vector) return Float is
       S : Float := 0.0;
    begin
       for I in X.First_Index .. X.Last_Index loop
          S := S + abs (X (I) - Y (I));
+      end loop;
+      return S;
+   end;
+
+   function Calc_Canberra_Distance (X : Float_Vectors.Vector; Y : Float_Vectors.Vector) return Float is
+      S : Float := 0.0;
+   begin
+      for I in X.First_Index .. X.Last_Index loop
+         S := S + (if X (I) - Y (I) = 0.0 then 0.0 else abs (X (I) - Y (I)) / (abs X (I) + abs Y (I)));
+      end loop;
+      return S;
+   end;
+
+   function Calc_Euclidean_Distance (X : Float_Vectors.Vector; Y : Float_Vectors.Vector) return Float is
+      S : Float := 0.0;
+   begin
+      for I in X.First_Index .. X.Last_Index loop
+         S := S + Sqrt ((X (I) - Y (I)) ** 2);
+      end loop;
+      return S;
+   end;
+
+   function Calc_Euclidean2_Distance (X : Float_Vectors.Vector; Y : Float_Vectors.Vector) return Float is
+      S : Float := 0.0;
+   begin
+      for I in X.First_Index .. X.Last_Index loop
+         S := S + (X (I) - Y (I)) ** 2;
       end loop;
       return S;
    end;
@@ -159,17 +186,34 @@ package body CBR is
       Close (F);
    end;
 
-   procedure Calc_Distance (X : in out Asset_Vectors.Vector; Y : Asset) is
+   function Calc_Distance (X : Float_Vectors.Vector; Y : Float_Vectors.Vector; Dis_Type : Distance_Type) return Float is
+   begin
+      case Dis_Type is
+         when Manhattan_Type =>
+           return Calc_Manhattan_Distance (X, Y);
+         when Euclidean_Type =>
+           return Calc_Euclidean_Distance (X, Y);
+         when Euclidean2_Type =>
+           return Calc_Euclidean2_Distance (X, Y);
+         when Canberra_Type =>
+            return Calc_Canberra_Distance (X, Y);
+         when others =>
+            Assert (False, "Unsupported distance");
+            return 0.0;
+      end case;
+   end;
+
+   procedure Calc_Distance (X : in out Asset_Vectors.Vector; Y : Asset; Dis_Type : Distance_Type) is
    begin
       for E : Asset of X loop
-         Float_Vectors.Append (E.Dis, Calc_Distance (E.Point, Y.Point));
+         Float_Vectors.Append (E.Dis, Calc_Distance (E.Point, Y.Point, Dis_Type));
       end loop;
    end;
 
-   procedure Calc_Distance (X : in out Asset_Vectors.Vector; Y : Asset_Vectors.Vector) is
+   procedure Calc_Distance (X : in out Asset_Vectors.Vector; Y : Asset_Vectors.Vector; Dis_Type : Distance_Type) is
    begin
       for E : Asset of Y loop
-         Calc_Distance (X, E);
+         Calc_Distance (X, E, Dis_Type);
       end loop;
    end;
 
