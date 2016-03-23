@@ -52,6 +52,33 @@ package body CBR is
       end loop;
    end;
 
+   procedure Get (F : File_Type; X : out Class_Vectors.Vector) is
+      use Class_Vectors;
+      V : Natural;
+   begin
+      while not End_Of_Line (F) loop
+         Get (F, V);
+         Append (X, V);
+      end loop;
+   end;
+
+   procedure Read_Prominent (X : out Prominent_Vectors.Vector; Name : String) is
+      use Prominent_Vectors;
+      F : File_Type;
+   begin
+      Open (F, In_File, Name);
+      while not End_Of_Page (F) loop
+         declare
+            P : Prominent;
+         begin
+            Get (F, P.P);
+            Append (X, P);
+            Skip_Line (F);
+         end;
+      end loop;
+      Close (F);
+   end;
+
    procedure Read_Point (X : out Asset_Vectors.Vector; Name : String) is
       F : File_Type;
    begin
@@ -75,6 +102,7 @@ package body CBR is
             Get (F, A.Class);
             Get (F, A.Point);
             Asset_Vectors.Append (X, A);
+            Skip_Line (F);
          end;
       end loop;
       Close (F);
@@ -311,6 +339,25 @@ package body CBR is
          S := Natural'Min (S, Natural (E.Point.Length));
       end loop;
       return S;
+   end;
+
+   function Eval_Prominent (P : Prominent; X : Asset_Vectors.Vector) return Natural is
+      S : Natural := 0;
+   begin
+      for E : Asset of X loop
+         if P.P (E.Class) > 0 then
+            S := S + 1;
+         end if;
+      end loop;
+      return S;
+   end;
+
+   procedure Eval_Prominent (P : Prominent_Vectors.Vector; X : Asset_Vectors.Vector; Y : out Natural_Vectors.Vector) is
+      use Natural_Vectors;
+   begin
+      for E : Prominent of P loop
+         Append (Y, Eval_Prominent (E, X));
+      end loop;
    end;
 
 end;

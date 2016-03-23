@@ -24,6 +24,7 @@ package CBR is
 
    package Float_Vectors is new Vectors (Positive, Float);
    package Class_Vectors is new Vectors (Natural, Natural);
+   package Natural_Vectors is new Vectors (Positive, Natural);
 
    type Distance_Type is (Unknown_Distance_Type, Canberra_Type, Euclidean_Type, Euclidean2_Type, Manhattan_Type);
 
@@ -61,9 +62,10 @@ package CBR is
    procedure Init_Prominent (X : in out Prominent_Vectors.Vector; Class_Count : Count_Type; K_Count : Count_Type);
    procedure Put (X : Prominent_Vectors.Vector);
    procedure Write_Prominent (X : Prominent_Vectors.Vector; Name : String);
+   procedure Read_Prominent (X : out Prominent_Vectors.Vector; Name : String);
    function Max_Class (X : Asset_Vectors.Vector) return Natural;
-
    function Dim_Count_Min (X : Asset_Vectors.Vector) return Natural;
    function Dim_Count_Max (X : Asset_Vectors.Vector) return Natural;
+   procedure Eval_Prominent (P : Prominent_Vectors.Vector; X : Asset_Vectors.Vector; Y : out Natural_Vectors.Vector);
 
 end;
