@@ -22,15 +22,23 @@ package CBR is
    use Ada.Strings.Fixed;
 
    package Float_Vectors is new Vectors (Positive, Float);
+   package Integer_Vectors is new Vectors (Natural, Integer);
 
    type Asset is record
-      Time : Integer := 0;
+      Time : Natural := 0;
       Class : Integer := 0;
+      Prominent : Integer;
       Point : Float_Vectors.Vector;
       Dis : Float_Vectors.Vector;
    end record;
 
+   type Prominent is record
+      P : Integer_Vectors.Vector;
+   end record;
+
+   package Prominent_Vectors is new Vectors (Positive, Prominent);
    package Asset_Vectors is new Vectors (Positive, Asset);
+
    procedure Set_Point_Dim_Count (X : out Asset_Vectors.Vector; N : Count_Type);
    procedure Get (F : File_Type; X : out Float_Vectors.Vector);
    procedure Read_Point (X : out Asset_Vectors.Vector; Name : String);
@@ -42,6 +50,13 @@ package CBR is
    procedure Write (X : Asset_Vectors.Vector; Name : String);
    procedure Calc_Distance (X : in out Asset_Vectors.Vector; Y : Asset_Vectors.Vector);
    procedure Write_Distance (X : Asset_Vectors.Vector; Name : String);
-
+   procedure Read_Distance (X : out Asset_Vectors.Vector; Name : String);
+   procedure Put_Dis (X : Asset_Vectors.Vector);
+   procedure Sort_Distance (X : in out Asset_Vectors.Vector; I : Positive);
+   procedure Calc_Prominent (X : in out Asset_Vectors.Vector);
+   procedure Summarize_Prominent (X : Asset_Vectors.Vector; Y : in out Prominent_Vectors.Vector);
+   procedure Init_Prominent (X : in out Prominent_Vectors.Vector; Class_Count : Count_Type; K_Count : Count_Type);
+   procedure Put (X : Prominent_Vectors.Vector);
+   procedure Write_Prominent (X : Prominent_Vectors.Vector; Name : String);
 
 end;
