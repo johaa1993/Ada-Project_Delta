@@ -101,6 +101,7 @@ package body CBR is
          begin
             Get (F, A.Class);
             Get (F, A.Point);
+            A.Time := Natural (Line (F));
             Asset_Vectors.Append (X, A);
             Skip_Line (F);
          end;
