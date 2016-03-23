@@ -258,6 +258,17 @@ package body CBR is
       Close (F);
    end;
 
+   procedure Write_Correctness (X : Natural_Vectors.Vector; Name : String) is
+      F : File_Type;
+   begin
+      Create (F, Out_File, Name);
+      for E : Natural of X loop
+         Put (F, E, 4);
+         New_Line (F);
+      end loop;
+      Close (F);
+   end;
+
    procedure Write_Prominent (X : Prominent_Vectors.Vector; Name : String) is
       F : File_Type;
    begin

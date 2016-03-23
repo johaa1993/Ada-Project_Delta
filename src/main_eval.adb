@@ -27,6 +27,7 @@ procedure Main_Eval is
    N : Natural_Vectors.Vector;
 
    Help_Text_1 : constant String := "<Prominent_File> <Sample_File>";
+   Help_Text_2 : constant String := "<Prominent_File> <Sample_File> <Out_Correctness_File>";
 
 begin
 
@@ -42,9 +43,15 @@ begin
          Put (N (I), 10);
          New_Line;
       end loop;
+   elsif Argument_Count = 3 then
+      Read_Prominent (P, Argument (1));
+      Read_Class (S, Argument (2));
+      Eval_Prominent (P, S, N);
+      Write_Correctness (N, Argument (3));
    else
       Put_Line ("Argument_Count must be 2.");
       Put_Line ("Usage: " & Help_Text_1);
+      Put_Line ("Usage: " & Help_Text_2);
    end if;
 
 end;

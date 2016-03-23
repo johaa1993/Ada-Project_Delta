@@ -67,5 +67,6 @@ package CBR is
    function Dim_Count_Min (X : Asset_Vectors.Vector) return Natural;
    function Dim_Count_Max (X : Asset_Vectors.Vector) return Natural;
    procedure Eval_Prominent (P : Prominent_Vectors.Vector; X : Asset_Vectors.Vector; Y : out Natural_Vectors.Vector);
+   procedure Write_Correctness (X : Natural_Vectors.Vector; Name : String);
 
 end;
