@@ -63,7 +63,7 @@ package body CBR is
    procedure Put (F : File_Type; X : Float_Vectors.Vector) is
    begin
       for E : Float of X loop
-         Put (F, E);
+         Put (F, E, 3, 5);
       end loop;
    end;
 

@@ -1,10 +1,10 @@
 :loop
 @cls
-if exist bin\distance.exe del /F bin\distance.exe
+if exist bin\normalize.exe del /F bin\normalize.exe
 @gprbuild main.gpr -p
-@if exist bin\distance.exe (
+@if exist bin\normalize.exe (
   cd bin
-  distance.exe B.csv S.csv D.csv
+  normalize.exe B.csv S.csv S1.csv as
   cd ..
 ) else (
   echo "No main.exe try again?"

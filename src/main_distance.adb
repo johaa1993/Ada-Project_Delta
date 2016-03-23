@@ -25,7 +25,15 @@ procedure Main_Distance is
    X : Asset_Vectors.Vector;
    Y : Asset_Vectors.Vector;
 
+   Help_Text : constant String := "<Asset_File> <Sample_File> <Out_Distance_File>";
+
 begin
+
+   if Argument_Count /= 3 then
+      Put_Line ("Argument_Count must be 3.");
+      Put_Line (" Usage: " & Help_Text);
+      return;
+   end if;
 
    Read_Class (X, Argument (1));
    Read_Class (Y, Argument (2));
