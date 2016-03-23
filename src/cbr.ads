@@ -27,7 +27,7 @@ package CBR is
    type Asset is record
       Time : Natural := 0;
       Class : Integer := 0;
-      Prominent : Integer;
+      Prominent : Integer := 0;
       Point : Float_Vectors.Vector;
       Dis : Float_Vectors.Vector;
    end record;

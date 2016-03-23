@@ -25,21 +25,26 @@ procedure Main_Distance is
    X : Asset_Vectors.Vector;
    Y : Asset_Vectors.Vector;
 
-   Help_Text : constant String := "<Asset_File> <Sample_File> <Out_Distance_File>";
+   Help_Text_1 : constant String := "<Asset_File> <Sample_File>";
+   Help_Text_2 : constant String := "<Asset_File> <Sample_File> <Out_Distance_File>";
 
 begin
 
-   if Argument_Count /= 3 then
+   if Argument_Count = 2 then
+      Read_Class (X, Argument (1));
+      Read_Class (Y, Argument (2));
+      Calc_Distance (X, Y);
+      Put_Dis (X);
+   elsif Argument_Count = 3 then
+      Read_Class (X, Argument (1));
+      Read_Class (Y, Argument (2));
+      Calc_Distance (X, Y);
+      Write_Distance (X, Argument (3));
+   else
       Put_Line ("Argument_Count must be 3.");
-      Put_Line (" Usage: " & Help_Text);
-      return;
+      Put_Line ("Usage: " & Help_Text_1);
+      Put_Line ("Usage: " & Help_Text_2);
    end if;
 
-   Read_Class (X, Argument (1));
-   Read_Class (Y, Argument (2));
-   Calc_Distance (X, Y);
-   Write_Distance (X, Argument (3));
-
-   null;
 end;
 

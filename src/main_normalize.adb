@@ -69,14 +69,20 @@ procedure Main_Normalize is
    Min : Float_Vectors.Vector;
    Max : Float_Vectors.Vector;
 
-   Help_Text_1 : constant String := "<Asset_File> <Out_Asset_File_Normalized>";
-   Help_Text_2 : constant String := "<Asset_File_Min_Max> <Asset_File> <Out_Asset_File_Normalized>";
+   Help_Text_1 : constant String := "<Asset_File>";
+   Help_Text_2 : constant String := "<Asset_File> <Out_Asset_File_Normalized>";
+   Help_Text_3 : constant String := "<Asset_File_Min_Max> <Asset_File> <Out_Asset_File_Normalized>";
 
 begin
 
 
-
-   if Argument_Count = 2 then
+   if Argument_Count = 1 then
+      Read_Class (X, Argument (1));
+      Set_Min_Max (X, Min, Max);
+      Find_Min_Max (X, Min, Max);
+      Normalize (X, Min, Max);
+      Put (X);
+   elsif Argument_Count = 2 then
       Read_Class (X, Argument (1));
       Set_Min_Max (X, Min, Max);
       Find_Min_Max (X, Min, Max);
@@ -93,6 +99,7 @@ begin
       Put_Line ("Usage");
       Put_Line (Help_Text_1);
       Put_Line (Help_Text_2);
+      Put_Line (Help_Text_3);
    end if;
 
 end;
