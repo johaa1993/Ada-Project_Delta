@@ -9,6 +9,7 @@ with Ada.Containers.Indefinite_Vectors;
 with Ada.Assertions;
 with Ada.Strings.Fixed;
 with CBR;
+with Dev.Math.Distances;
 
 procedure Main_Distance is
 
@@ -21,22 +22,6 @@ procedure Main_Distance is
    use Ada.Integer_Text_IO;
    use Ada.Containers;
    use Ada.Strings.Fixed;
-
-   function Get_Distance_Type (Name : String) return Distance_Type is
-   begin
-      if Name = "euclidean" then
-         return Euclidean_Type;
-      elsif Name = "euclidean2" then
-         return Euclidean2_Type;
-      elsif Name = "canberra" then
-         return Canberra_Type;
-      elsif Name = "manhattan" then
-         return Manhattan_Type;
-      else
-         Assert (False, "Distance type unknown");
-         return Unknown_Distance_Type;
-      end if;
-   end;
 
    X : Asset_Vectors.Vector;
    Y : Asset_Vectors.Vector;
@@ -51,12 +36,12 @@ begin
    if Argument_Count = 3 then
       Read_Class (X, Argument (1));
       Read_Class (Y, Argument (2));
-      Calc_Distance (X, Y, Get_Distance_Type (Argument (3)));
+      Calc_Distance (X, Y, Dev.Math.Distances.Kinds.Value (Argument (3)));
       Put_Dis (X);
    elsif Argument_Count = 4 then
       Read_Class (X, Argument (1));
       Read_Class (Y, Argument (2));
-      Calc_Distance (X, Y, Get_Distance_Type (Argument (3)));
+      Calc_Distance (X, Y, Dev.Math.Distances.Kinds.Value (Argument (3)));
       Write_Distance (X, Argument (4));
    else
       Put_Line ("Argument_Count must be 3 or 4.");

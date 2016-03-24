@@ -9,9 +9,11 @@ with Ada.Containers.Indefinite_Vectors;
 with Ada.Assertions;
 with Ada.Strings.Fixed;
 with CBR;
+with Dev.Math;
 
 procedure Main_Normalize is
 
+   use Dev.Math;
    use CBR;
    use Ada.Numerics.Real_Arrays;
    use Ada.Text_IO;
@@ -22,52 +24,33 @@ procedure Main_Normalize is
    use Ada.Containers;
    use Ada.Strings.Fixed;
 
-   function Normalize (Value : Float; Min, Max : Float) return Float is
-   begin
-      return (Value - Min) / (Max - Min);
-   end;
-
-   procedure Normalize (X : in out Float_Vectors.Vector; Min : in out Float_Vectors.Vector; Max : in out Float_Vectors.Vector) is
-   begin
-      for I in X.First_Index .. X.Last_Index loop
-         X (I) := Normalize (X (I), Min (I), Max (I));
-      end loop;
-   end;
-
-   procedure Normalize (X : in out Asset_Vectors.Vector; Min : in out Float_Vectors.Vector; Max : in out Float_Vectors.Vector) is
-   begin
-      for E : Asset of X loop
-         Normalize (E.Point, Min, Max);
-      end loop;
-   end;
-
-   procedure Find_Min_Max (X : Float_Vectors.Vector; Min : in out Float_Vectors.Vector; Max : in out Float_Vectors.Vector) is
-   begin
-      for I in X.First_Index .. X.Last_Index loop
-         Min (I) := Float'Min (X (I), Min (I));
-         Max (I) := Float'Max (X (I), Max (I));
-      end loop;
-   end;
-
-   procedure Find_Min_Max (X : Asset_Vectors.Vector; Min : in out Float_Vectors.Vector; Max : in out Float_Vectors.Vector) is
+   procedure Find_Min_Max (X : Asset_Vectors.Vector; Min : in out Dev.Math.Vectors.Vector; Max : in out Dev.Math.Vectors.Vector) is
    begin
       for E : Asset of X loop
          Find_Min_Max (E.Point, Min, Max);
       end loop;
    end;
 
-   procedure Set_Min_Max (X : Asset_Vectors.Vector; Min : in out Float_Vectors.Vector; Max : in out Float_Vectors.Vector) is
+   procedure Set_Min_Max (X : Asset_Vectors.Vector; Min : in out Dev.Math.Vectors.Vector; Max : in out Dev.Math.Vectors.Vector) is
+      use Dev.Math.Vectors;
    begin
       for E : Float of X (1).Point loop
-         Float_Vectors.Append (Min, Float'Last);
-         Float_Vectors.Append (Max, Float'First);
+         Append (Min, Float'Last);
+         Append (Max, Float'First);
+      end loop;
+   end;
+
+   procedure Normalize (X : in out Asset_Vectors.Vector; Min : in out Dev.Math.Vectors.Vector; Max : in out Dev.Math.Vectors.Vector) is
+   begin
+      for E : Asset of X loop
+         Normalize (E.Point, Min, Max);
       end loop;
    end;
 
    X : Asset_Vectors.Vector;
    Y : Asset_Vectors.Vector;
-   Min : Float_Vectors.Vector;
-   Max : Float_Vectors.Vector;
+   Min : Dev.Math.Vectors.Vector;
+   Max : Dev.Math.Vectors.Vector;
 
    Help_Text_1 : constant String := "<Asset_File>";
    Help_Text_2 : constant String := "<Asset_File> <Out_Asset_File_Normalized>";

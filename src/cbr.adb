@@ -1,64 +1,10 @@
 package body CBR is
 
-   function Calc_Manhattan_Distance (X : Float_Vectors.Vector; Y : Float_Vectors.Vector) return Float is
-      S : Float := 0.0;
-   begin
-      for I in X.First_Index .. X.Last_Index loop
-         S := S + abs (X (I) - Y (I));
-      end loop;
-      return S;
-   end;
-
-   function Calc_Canberra_Distance (X : Float_Vectors.Vector; Y : Float_Vectors.Vector) return Float is
-      S : Float := 0.0;
-   begin
-      for I in X.First_Index .. X.Last_Index loop
-         S := S + (if X (I) - Y (I) = 0.0 then 0.0 else abs (X (I) - Y (I)) / (abs X (I) + abs Y (I)));
-      end loop;
-      return S;
-   end;
-
-   function Calc_Euclidean_Distance (X : Float_Vectors.Vector; Y : Float_Vectors.Vector) return Float is
-      S : Float := 0.0;
-   begin
-      for I in X.First_Index .. X.Last_Index loop
-         S := S + Sqrt ((X (I) - Y (I)) ** 2);
-      end loop;
-      return S;
-   end;
-
-   function Calc_Euclidean2_Distance (X : Float_Vectors.Vector; Y : Float_Vectors.Vector) return Float is
-      S : Float := 0.0;
-   begin
-      for I in X.First_Index .. X.Last_Index loop
-         S := S + (X (I) - Y (I)) ** 2;
-      end loop;
-      return S;
-   end;
-
    procedure Set_Point_Dim_Count (X : out Asset_Vectors.Vector; N : Count_Type) is
+      use Dev.Math.Vectors;
    begin
       for E : Asset of X loop
-         Float_Vectors.Set_Length (E.Point, N);
-      end loop;
-   end;
-
-   procedure Get (F : File_Type; X : out Float_Vectors.Vector) is
-      V : Float;
-   begin
-      while not End_Of_Line (F) loop
-         Get (F, V);
-         Float_Vectors.Append (X, V);
-      end loop;
-   end;
-
-   procedure Get (F : File_Type; X : out Class_Vectors.Vector) is
-      use Class_Vectors;
-      V : Natural;
-   begin
-      while not End_Of_Line (F) loop
-         Get (F, V);
-         Append (X, V);
+         Set_Length (E.Point, N);
       end loop;
    end;
 
@@ -71,7 +17,7 @@ package body CBR is
          declare
             P : Prominent;
          begin
-            Get (F, P.P);
+            Get_Append_Vector (F, P.P);
             Append (X, P);
             Skip_Line (F);
          end;
@@ -85,7 +31,7 @@ package body CBR is
       Open (F, In_File, Name);
       for E : Asset of X loop
          Assert (not End_Of_Page (F), "The file " & Name & " has less rows than the class file.");
-         Get (F, E.Point);
+         Get_Append_Vector (F, E.Point);
          Skip_Line (F);
       end loop;
       Close (F);
@@ -100,7 +46,7 @@ package body CBR is
             A : Asset;
          begin
             Get (F, A.Class);
-            Get (F, A.Point);
+            Get_Append_Vector (F, A.Point);
             A.Time := Natural (Line (F));
             Asset_Vectors.Append (X, A);
             Skip_Line (F);
@@ -118,40 +64,12 @@ package body CBR is
             A : Asset;
          begin
             Get (F, A.Class);
-            Get (F, A.Dis);
+            Get_Append_Vector (F, A.Dis);
             A.Time := Natural (Line (F));
             Asset_Vectors.Append (X, A);
          end;
       end loop;
       Close (F);
-   end;
-
-   procedure Put (X : Float_Vectors.Vector; Fore : Field; Aft : Field) is
-   begin
-      for E : Float of X loop
-         Put (E, Fore, Aft);
-      end loop;
-   end;
-
-   procedure Put (F : File_Type; X : Float_Vectors.Vector) is
-   begin
-      for E : Float of X loop
-         Put (F, E, 3, 5);
-      end loop;
-   end;
-
-   procedure Put (X : Class_Vectors.Vector; Width : Field) is
-   begin
-      for E : Natural of X loop
-         Put (E, Width);
-      end loop;
-   end;
-
-   procedure Put (F : File_Type; X : Class_Vectors.Vector) is
-   begin
-      for E : Natural of X loop
-         Put (F, E, 3);
-      end loop;
    end;
 
    procedure Put (X : Prominent_Vectors.Vector) is
@@ -163,7 +81,7 @@ package body CBR is
       for I in X.First_Index .. X.Last_Index loop
          Put (I, 3);
          Put ("|");
-         Put (X (I).P, 3);
+         Put_Vector (X (I).P, "", 3);
          New_Line;
       end loop;
    end;
@@ -179,8 +97,8 @@ package body CBR is
       for E : Asset of X loop
          Put (E.Time, 6);
          Put (E.Class, 6);
-         Put (E.Point, Fore, Aft);
-         Put (E.Dis, Fore, Aft);
+         Put_Vector (E.Point, "", Fore, Aft);
+         Put_Vector (E.Dis, "", Fore, Aft);
          New_Line;
       end loop;
    end;
@@ -198,7 +116,7 @@ package body CBR is
          Put (E.Time, 6);
          Put (E.Class, 6);
          Put (E.Prominent, 10);
-         Put (E.Dis, Fore, Aft);
+         Put_Vector (E.Dis, "", Fore, Aft);
          New_Line;
       end loop;
    end;
@@ -209,40 +127,41 @@ package body CBR is
       Create (F, Out_File, Name);
       for E : Asset of X loop
          Put (F, E.Class);
-         Put (F, E.Point);
+         Put_Vector (F, E.Point, " ");
          New_Line (F);
       end loop;
       Close (F);
    end;
 
-   function Calc_Distance (X : Float_Vectors.Vector; Y : Float_Vectors.Vector; Dis_Type : Distance_Type) return Float is
+   function Calc_Distance (X : Dev.Math.Vectors.Vector; Y : Dev.Math.Vectors.Vector; Kind : Distances.Kinds.Kind) return Distance is
    begin
-      case Dis_Type is
-         when Manhattan_Type =>
-           return Calc_Manhattan_Distance (X, Y);
-         when Euclidean_Type =>
-           return Calc_Euclidean_Distance (X, Y);
-         when Euclidean2_Type =>
-           return Calc_Euclidean2_Distance (X, Y);
-         when Canberra_Type =>
-            return Calc_Canberra_Distance (X, Y);
+      case Kind is
+         when Distances.Kinds.Manhattan =>
+           return Distances.Manhattan (X, Y);
+         when Distances.Kinds.Canberra =>
+           return Distances.Manhattan (X, Y);
+         when Distances.Kinds.Euclidean =>
+           return Distances.Manhattan (X, Y);
+         when Distances.Kinds.Euclidean2 =>
+            return Distances.Manhattan (X, Y);
          when others =>
             Assert (False, "Unsupported distance");
             return 0.0;
       end case;
    end;
 
-   procedure Calc_Distance (X : in out Asset_Vectors.Vector; Y : Asset; Dis_Type : Distance_Type) is
+   procedure Calc_Distance (X : in out Asset_Vectors.Vector; Y : Asset; Kind : Distances.Kinds.Kind) is
+      use Distance_Vectors;
    begin
       for E : Asset of X loop
-         Float_Vectors.Append (E.Dis, Calc_Distance (E.Point, Y.Point, Dis_Type));
+         Append (E.Dis, Calc_Distance (E.Point, Y.Point, Kind));
       end loop;
    end;
 
-   procedure Calc_Distance (X : in out Asset_Vectors.Vector; Y : Asset_Vectors.Vector; Dis_Type : Distance_Type) is
+   procedure Calc_Distance (X : in out Asset_Vectors.Vector; Y : Asset_Vectors.Vector; Kind : Distances.Kinds.Kind) is
    begin
       for E : Asset of Y loop
-         Calc_Distance (X, E, Dis_Type);
+         Calc_Distance (X, E, Kind);
       end loop;
    end;
 
@@ -252,7 +171,7 @@ package body CBR is
       Create (F, Out_File, Name);
       for E : Asset of X loop
          Put (F, E.Class);
-         Put (F, E.Dis);
+         Put_Vector (F, E.Dis, " ");
          New_Line (F);
       end loop;
       Close (F);
@@ -274,13 +193,13 @@ package body CBR is
    begin
       Create (F, Out_File, Name);
       for E : Prominent of X loop
-         Put (F, E.P);
+         Put_Vector (F, E.P, "");
          New_Line (F);
       end loop;
       Close (F);
    end;
 
-   procedure Sort_Distance (X : in out Asset_Vectors.Vector; I : Positive) is
+   procedure Sort_Distance (X : in out Asset_Vectors.Vector; I : Natural) is
       function "<" (A, B : Asset) return Boolean is (A.Dis (I) < B.Dis (I));
       package Sorting is new Asset_Vectors.Generic_Sorting ("<");
    begin
