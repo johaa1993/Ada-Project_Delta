@@ -8,6 +8,8 @@ package Dev.Texts is
 
    use Ada.Text_IO;
 
+   function Get_Put_Float_Width (Fore : Field; Aft : Field) return Natural is (Fore + Aft + 5);
+
    generic
       type Index is range <>;
       type Num is digits <>;

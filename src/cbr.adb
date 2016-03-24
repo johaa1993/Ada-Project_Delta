@@ -1,5 +1,6 @@
 package body CBR is
 
+
    procedure Set_Point_Dim_Count (X : out Asset_Vectors.Vector; N : Count_Type) is
       use Dev.Math.Vectors;
    begin
@@ -92,7 +93,7 @@ package body CBR is
    begin
       Put (Tail ("Time", 6));
       Put (Tail ("Class", 6));
-      Put (Tail ("Point", Put_Width (Fore, Aft)));
+      Put (Tail ("Point", Get_Put_Float_Width (Fore, Aft)));
       New_Line;
       for E : Asset of X loop
          Put (E.Time, 6);
@@ -110,7 +111,7 @@ package body CBR is
       Put (Tail ("Time", 6));
       Put (Tail ("Class", 6));
       Put (Tail ("Prominent", 10));
-      Put (Tail ("Distance", Put_Width (Fore, Aft)));
+      Put (Tail ("Distance", Get_Put_Float_Width (Fore, Aft)));
       New_Line;
       for E : Asset of X loop
          Put (E.Time, 6);

@@ -12,7 +12,6 @@ with Ada.Numerics.Elementary_Functions;
 
 with Dev.Math;
 with Dev.Math.Distances;
-
 with Dev.Texts;
 
 package CBR is
@@ -68,7 +67,6 @@ package CBR is
    procedure Set_Point_Dim_Count (X : out Asset_Vectors.Vector; N : Count_Type);
    procedure Read_Point (X : out Asset_Vectors.Vector; Name : String);
    procedure Read_Class (X : out Asset_Vectors.Vector; Name : String);
-   function Put_Width (Fore : Field; Aft : Field) return Natural is (Fore + Aft + 5);
    procedure Put (X : Asset_Vectors.Vector);
    procedure Write (X : Asset_Vectors.Vector; Name : String);
    procedure Calc_Distance (X : in out Asset_Vectors.Vector; Y : Asset_Vectors.Vector; Kind : Distances.Kinds.Kind);
@@ -76,16 +74,18 @@ package CBR is
    procedure Read_Distance (X : out Asset_Vectors.Vector; Name : String);
    procedure Put_Dis (X : Asset_Vectors.Vector);
    procedure Sort_Distance (X : in out Asset_Vectors.Vector; I : Natural);
+
    procedure Calc_Prominent (X : in out Asset_Vectors.Vector);
    procedure Summarize_Prominent (X : Asset_Vectors.Vector; Y : in out Prominent_Vectors.Vector);
    procedure Init_Prominent (X : in out Prominent_Vectors.Vector; Class_Count : Count_Type; K_Count : Count_Type);
    procedure Put (X : Prominent_Vectors.Vector);
    procedure Write_Prominent (X : Prominent_Vectors.Vector; Name : String);
    procedure Read_Prominent (X : out Prominent_Vectors.Vector; Name : String);
+   procedure Eval_Prominent (P : Prominent_Vectors.Vector; X : Asset_Vectors.Vector; Y : out Natural_Vectors.Vector);
+
    function Max_Class (X : Asset_Vectors.Vector) return Natural;
    function Dim_Count_Min (X : Asset_Vectors.Vector) return Natural;
    function Dim_Count_Max (X : Asset_Vectors.Vector) return Natural;
-   procedure Eval_Prominent (P : Prominent_Vectors.Vector; X : Asset_Vectors.Vector; Y : out Natural_Vectors.Vector);
    procedure Write_Correctness (X : Natural_Vectors.Vector; Name : String);
 
 end;
