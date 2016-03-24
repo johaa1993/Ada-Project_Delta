@@ -7,9 +7,9 @@ package Dev.Math.Distances is
       function Value (Name : String) return Kind;
    end;
 
-   function Manhattan (A : Vector; B : Vector) return Distance;
-   function Canberra (A : Vector; B : Vector) return Distance;
-   function Euclidean (A : Vector; B : Vector) return Distance;
-   function Euclidean2 (A : Vector; B : Vector) return Distance;
+   function Manhattan (A : Float_Vector; B : Float_Vector) return Distance;
+   function Canberra (A : Float_Vector; B : Float_Vector) return Distance;
+   function Euclidean (A : Float_Vector; B : Float_Vector) return Distance;
+   function Euclidean2 (A : Float_Vector; B : Float_Vector) return Distance;
 
 end;

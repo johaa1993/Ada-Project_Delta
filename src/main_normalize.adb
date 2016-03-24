@@ -24,15 +24,15 @@ procedure Main_Normalize is
    use Ada.Containers;
    use Ada.Strings.Fixed;
 
-   procedure Find_Min_Max (X : Asset_Vectors.Vector; Min : in out Dev.Math.Vectors.Vector; Max : in out Dev.Math.Vectors.Vector) is
+   procedure Find_Min_Max (X : Asset_Vector; Min : in out Float_Vector; Max : in out Float_Vector) is
    begin
       for E : Asset of X loop
          Find_Min_Max (E.Point, Min, Max);
       end loop;
    end;
 
-   procedure Set_Min_Max (X : Asset_Vectors.Vector; Min : in out Dev.Math.Vectors.Vector; Max : in out Dev.Math.Vectors.Vector) is
-      use Dev.Math.Vectors;
+   procedure Set_Min_Max (X : Asset_Vector; Min : in out Float_Vector; Max : in out Float_Vector) is
+      use Dev.Math.Float_Vectors;
    begin
       for E : Float of X (1).Point loop
          Append (Min, Float'Last);
@@ -40,17 +40,17 @@ procedure Main_Normalize is
       end loop;
    end;
 
-   procedure Normalize (X : in out Asset_Vectors.Vector; Min : in out Dev.Math.Vectors.Vector; Max : in out Dev.Math.Vectors.Vector) is
+   procedure Normalize (X : in out Asset_Vector; Min : in out Float_Vector; Max : in out Float_Vector) is
    begin
       for E : Asset of X loop
          Normalize (E.Point, Min, Max);
       end loop;
    end;
 
-   X : Asset_Vectors.Vector;
-   Y : Asset_Vectors.Vector;
-   Min : Dev.Math.Vectors.Vector;
-   Max : Dev.Math.Vectors.Vector;
+   X : Asset_Vector;
+   Y : Asset_Vector;
+   Min : Float_Vector;
+   Max : Float_Vector;
 
    Help_Text_1 : constant String := "<Asset_File>";
    Help_Text_2 : constant String := "<Asset_File> <Out_Asset_File_Normalized>";

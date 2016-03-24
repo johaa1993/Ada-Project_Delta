@@ -22,7 +22,7 @@ package body Dev.Math.Distances is
       end;
    end;
 
-   function Manhattan (A : Vector; B : Vector) return Distance is
+   function Manhattan (A : Float_Vector; B : Float_Vector) return Distance is
       S : Float := 0.0;
    begin
       for I in A.First_Index .. A.Last_Index loop
@@ -31,7 +31,7 @@ package body Dev.Math.Distances is
       return Distance (S);
    end;
 
-   function Canberra (A : Vector; B : Vector) return Distance is
+   function Canberra (A : Float_Vector; B : Float_Vector) return Distance is
       S : Float := 0.0;
    begin
       for I in A.First_Index .. A.Last_Index loop
@@ -40,7 +40,7 @@ package body Dev.Math.Distances is
       return Distance (S);
    end;
 
-   function Euclidean (A : Vector; B : Vector) return Distance is
+   function Euclidean (A : Float_Vector; B : Float_Vector) return Distance is
       use Ada.Numerics.Elementary_Functions;
       S : Float := 0.0;
    begin
@@ -50,7 +50,7 @@ package body Dev.Math.Distances is
       return Distance (S);
    end;
 
-   function Euclidean2 (A : Vector; B : Vector) return Distance is
+   function Euclidean2 (A : Float_Vector; B : Float_Vector) return Distance is
       S : Float := 0.0;
    begin
       for I in A.First_Index .. A.Last_Index loop

@@ -1,15 +1,14 @@
 package body CBR is
 
-
-   procedure Set_Point_Dim_Count (X : out Asset_Vectors.Vector; N : Count_Type) is
-      use Dev.Math.Vectors;
+   procedure Set_Point_Dim_Count (X : out Asset_Vector; N : Count_Type) is
+      use Dev.Math.Float_Vectors;
    begin
       for E : Asset of X loop
          Set_Length (E.Point, N);
       end loop;
    end;
 
-   procedure Read_Prominent (X : out Prominent_Vectors.Vector; Name : String) is
+   procedure Read_Prominent (X : out Prominent_Vector; Name : String) is
       use Prominent_Vectors;
       F : File_Type;
    begin
@@ -26,7 +25,7 @@ package body CBR is
       Close (F);
    end;
 
-   procedure Read_Point (X : out Asset_Vectors.Vector; Name : String) is
+   procedure Read_Point (X : out Asset_Vector; Name : String) is
       F : File_Type;
    begin
       Open (F, In_File, Name);
@@ -38,7 +37,7 @@ package body CBR is
       Close (F);
    end;
 
-   procedure Read_Class (X : out Asset_Vectors.Vector; Name : String) is
+   procedure Read_Class (X : out Asset_Vector; Name : String) is
       F : File_Type;
    begin
       Open (F, In_File, Name);
@@ -56,7 +55,7 @@ package body CBR is
       Close (F);
    end;
 
-   procedure Read_Distance (X : out Asset_Vectors.Vector; Name : String) is
+   procedure Read_Distance (X : out Asset_Vector; Name : String) is
       F : File_Type;
    begin
       Open (F, In_File, Name);
@@ -68,12 +67,59 @@ package body CBR is
             Get_Append_Vector (F, A.Dis);
             A.Time := Natural (Line (F));
             Asset_Vectors.Append (X, A);
+            Skip_Line (F);
          end;
       end loop;
       Close (F);
    end;
 
-   procedure Put (X : Prominent_Vectors.Vector) is
+   procedure Write (X : Asset_Vector; Name : String) is
+      F : File_Type;
+   begin
+      Create (F, Out_File, Name);
+      for E : Asset of X loop
+         Put (F, E.Class);
+         Put_Vector (F, E.Point, " ");
+         New_Line (F);
+      end loop;
+      Close (F);
+   end;
+
+   procedure Write_Distance (X : Asset_Vector; Name : String) is
+      F : File_Type;
+   begin
+      Create (F, Out_File, Name);
+      for E : Asset of X loop
+         Put (F, E.Class);
+         Put_Vector (F, E.Dis, " ");
+         New_Line (F);
+      end loop;
+      Close (F);
+   end;
+
+   procedure Write_Correctness (X : Natural_Vector; Name : String) is
+      F : File_Type;
+   begin
+      Create (F, Out_File, Name);
+      for E : Natural of X loop
+         Put (F, E, 4);
+         New_Line (F);
+      end loop;
+      Close (F);
+   end;
+
+   procedure Write_Prominent (X : Prominent_Vector; Name : String) is
+      F : File_Type;
+   begin
+      Create (F, Out_File, Name);
+      for E : Prominent of X loop
+         Put_Vector (F, E.P, "");
+         New_Line (F);
+      end loop;
+      Close (F);
+   end;
+
+   procedure Put (X : Prominent_Vector) is
    begin
       Put (Tail ("K", 3));
       Put ("|");
@@ -87,7 +133,7 @@ package body CBR is
       end loop;
    end;
 
-   procedure Put (X : Asset_Vectors.Vector) is
+   procedure Put (X : Asset_Vector ) is
       Fore : Field := 2;
       Aft : Field := 3;
    begin
@@ -104,7 +150,7 @@ package body CBR is
       end loop;
    end;
 
-   procedure Put_Dis (X : Asset_Vectors.Vector) is
+   procedure Put_Dis (X : Asset_Vector) is
       Fore : Field := 2;
       Aft : Field := 3;
    begin
@@ -122,19 +168,7 @@ package body CBR is
       end loop;
    end;
 
-   procedure Write (X : Asset_Vectors.Vector; Name : String) is
-      F : File_Type;
-   begin
-      Create (F, Out_File, Name);
-      for E : Asset of X loop
-         Put (F, E.Class);
-         Put_Vector (F, E.Point, " ");
-         New_Line (F);
-      end loop;
-      Close (F);
-   end;
-
-   function Calc_Distance (X : Dev.Math.Vectors.Vector; Y : Dev.Math.Vectors.Vector; Kind : Distances.Kinds.Kind) return Distance is
+   function Calc_Distance (X : Float_Vector; Y : Float_Vector; Kind : Distances.Kinds.Kind) return Distance is
    begin
       case Kind is
          when Distances.Kinds.Manhattan =>
@@ -151,7 +185,7 @@ package body CBR is
       end case;
    end;
 
-   procedure Calc_Distance (X : in out Asset_Vectors.Vector; Y : Asset; Kind : Distances.Kinds.Kind) is
+   procedure Calc_Distance (X : in out Asset_Vector; Y : Asset; Kind : Distances.Kinds.Kind) is
       use Distance_Vectors;
    begin
       for E : Asset of X loop
@@ -159,56 +193,15 @@ package body CBR is
       end loop;
    end;
 
-   procedure Calc_Distance (X : in out Asset_Vectors.Vector; Y : Asset_Vectors.Vector; Kind : Distances.Kinds.Kind) is
+   procedure Calc_Distance (X : in out Asset_Vector; Y : Asset_Vector; Kind : Distances.Kinds.Kind) is
    begin
       for E : Asset of Y loop
          Calc_Distance (X, E, Kind);
       end loop;
    end;
 
-   procedure Write_Distance (X : Asset_Vectors.Vector; Name : String) is
-      F : File_Type;
-   begin
-      Create (F, Out_File, Name);
-      for E : Asset of X loop
-         Put (F, E.Class);
-         Put_Vector (F, E.Dis, " ");
-         New_Line (F);
-      end loop;
-      Close (F);
-   end;
-
-   procedure Write_Correctness (X : Natural_Vectors.Vector; Name : String) is
-      F : File_Type;
-   begin
-      Create (F, Out_File, Name);
-      for E : Natural of X loop
-         Put (F, E, 4);
-         New_Line (F);
-      end loop;
-      Close (F);
-   end;
-
-   procedure Write_Prominent (X : Prominent_Vectors.Vector; Name : String) is
-      F : File_Type;
-   begin
-      Create (F, Out_File, Name);
-      for E : Prominent of X loop
-         Put_Vector (F, E.P, "");
-         New_Line (F);
-      end loop;
-      Close (F);
-   end;
-
-   procedure Sort_Distance (X : in out Asset_Vectors.Vector; I : Natural) is
-      function "<" (A, B : Asset) return Boolean is (A.Dis (I) < B.Dis (I));
-      package Sorting is new Asset_Vectors.Generic_Sorting ("<");
-   begin
-      Sorting.Sort (X);
-   end;
-
-   procedure Calc_Prominent (X : in out Asset_Vectors.Vector) is
-      S : Class_Vectors.Vector;
+   procedure Calc_Prominent (X : in out Asset_Vector) is
+      S : Class_Vector;
       M : Integer := -1;
       T : Integer := 0;
    begin
@@ -228,14 +221,21 @@ package body CBR is
       end loop;
    end;
 
-   procedure Summarize_Prominent (X : Asset_Vectors.Vector; Y : in out Prominent_Vectors.Vector) is
+   procedure Sort_Distance (X : in out Asset_Vector; I : Natural) is
+      function "<" (A, B : Asset) return Boolean is (A.Dis (I) < B.Dis (I));
+      package Sorting is new Asset_Vectors.Generic_Sorting ("<");
+   begin
+      Sorting.Sort (X);
+   end;
+
+   procedure Summarize_Prominent (X : Asset_Vector; Y : in out Prominent_Vector) is
    begin
       for I in Y.First_Index .. Y.Last_Index loop
          Y (I).P (X (I).Prominent) := Y (I).P (X (I).Prominent) + 1;
       end loop;
    end;
 
-   procedure Init_Prominent (X : in out Prominent_Vectors.Vector; Class_Count : Count_Type; K_Count : Count_Type) is
+   procedure Init_Prominent (X : in out Prominent_Vector; Class_Count : Count_Type; K_Count : Count_Type) is
    begin
       X.Set_Length (K_Count);
       for E : Prominent of X loop
@@ -246,7 +246,7 @@ package body CBR is
       end loop;
    end;
 
-   function Max_Class (X : Asset_Vectors.Vector) return Natural is
+   function Max_Class (X : Asset_Vector) return Natural is
       S : Natural := 0;
    begin
       for E : Asset of X loop
@@ -255,7 +255,7 @@ package body CBR is
       return S;
    end;
 
-   function Dim_Count_Max (X : Asset_Vectors.Vector) return Natural is
+   function Dim_Count_Max (X : Asset_Vector) return Natural is
       S : Natural := 0;
    begin
       for E : Asset of X loop
@@ -264,7 +264,7 @@ package body CBR is
       return S;
    end;
 
-   function Dim_Count_Min (X : Asset_Vectors.Vector) return Natural is
+   function Dim_Count_Min (X : Asset_Vector) return Natural is
       S : Natural := Natural'Last;
    begin
       for E : Asset of X loop
@@ -273,7 +273,7 @@ package body CBR is
       return S;
    end;
 
-   function Eval_Prominent (P : Prominent; X : Asset_Vectors.Vector) return Natural is
+   function Eval_Prominent (P : Prominent; X : Asset_Vector) return Natural is
       S : Natural := 0;
    begin
       for E : Asset of X loop
@@ -284,7 +284,7 @@ package body CBR is
       return S;
    end;
 
-   procedure Eval_Prominent (P : Prominent_Vectors.Vector; X : Asset_Vectors.Vector; Y : out Natural_Vectors.Vector) is
+   procedure Eval_Prominent (P : Prominent_Vector; X : Asset_Vector; Y : out Natural_Vector) is
       use Natural_Vectors;
    begin
       for E : Prominent of P loop

@@ -7,14 +7,14 @@ package body Dev.Math is
       return (Value - Min) / (Max - Min);
    end;
 
-   procedure Normalize (X : in out Vector; Min : in out Vector; Max : in out Vector) is
+   procedure Normalize (X : in out Float_Vector; Min : in out Float_Vector; Max : in out Float_Vector) is
    begin
       for I in X.First_Index .. X.Last_Index loop
          X (I) := Normalize (X (I), Min (I), Max (I));
       end loop;
    end;
 
-   procedure Find_Min_Max (X : Vector; Min : in out Vector; Max : in out Vector) is
+   procedure Find_Min_Max (X : Float_Vector; Min : in out Float_Vector; Max : in out Float_Vector) is
    begin
       for I in X.First_Index .. X.Last_Index loop
          Min (I) := Float'Min (X (I), Min (I));
