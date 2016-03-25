@@ -70,4 +70,21 @@ package body Dev.Math.Distances is
    end;
 
 
+   function Distance_Select (A : Float_Vector; B : Float_Vector; Kind : Kinds.Kind) return Distance is
+   begin
+      case Kind is
+         when Kinds.Manhattan =>
+           return Manhattan (A, B);
+         when Kinds.Canberra =>
+           return Manhattan (A, B);
+         when Kinds.Euclidean =>
+           return Manhattan (A, B);
+         when Kinds.Euclidean2 =>
+            return Manhattan (A, B);
+         when others =>
+            Assert (False, "Unsupported distance");
+            return 0.0;
+      end case;
+   end;
+
 end;

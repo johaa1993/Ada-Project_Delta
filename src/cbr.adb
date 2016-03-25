@@ -168,28 +168,12 @@ package body CBR is
       end loop;
    end;
 
-   function Calc_Distance (X : Float_Vector; Y : Float_Vector; Kind : Distances.Kinds.Kind) return Distance is
-   begin
-      case Kind is
-         when Distances.Kinds.Manhattan =>
-           return Distances.Manhattan (X, Y);
-         when Distances.Kinds.Canberra =>
-           return Distances.Manhattan (X, Y);
-         when Distances.Kinds.Euclidean =>
-           return Distances.Manhattan (X, Y);
-         when Distances.Kinds.Euclidean2 =>
-            return Distances.Manhattan (X, Y);
-         when others =>
-            Assert (False, "Unsupported distance");
-            return 0.0;
-      end case;
-   end;
-
    procedure Calc_Distance (X : in out Asset_Vector; Y : Asset; Kind : Distances.Kinds.Kind) is
       use Distance_Vectors;
+      use Dev.Math.Distances;
    begin
       for E : Asset of X loop
-         Append (E.Dis, Calc_Distance (E.Point, Y.Point, Kind));
+         Append (E.Dis, Distance_Select (E.Point, Y.Point, Kind));
       end loop;
    end;
 
@@ -201,14 +185,13 @@ package body CBR is
    end;
 
    procedure Calc_Prominent (X : in out Asset_Vector) is
+      use Class_Vectors;
       S : Class_Vector;
       M : Integer := -1;
       T : Integer := 0;
+      N : Count_Type := 10;
    begin
-      S.Set_Length (10);
-      for E : Natural of S loop
-         E := 0;
-      end loop;
+      S := To_Vector (0, N);
       for E : Asset of X loop
          S (E.Class) := S (E.Class) + 1;
          if M = S (E.Class) then
@@ -239,14 +222,10 @@ package body CBR is
    procedure Initialize (Item : in out Prominent_Vector; Class_Count : Count_Type; K_Count : Count_Type) is
       use Prominent_Vectors;
       use Class_Vectors;
+      P : Prominent;
    begin
-      Set_Length (Item, K_Count);
-      for P : Prominent of Item loop
-         Set_Length (P.P, Class_Count);
-         for C : Natural of P.P loop
-            C := 0;
-         end loop;
-      end loop;
+      P.P := To_Vector (0, Class_Count);
+      Item := To_Vector (P, K_Count);
    end;
 
    function Max_Class (X : Asset_Vector) return Natural is

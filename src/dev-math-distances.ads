@@ -11,5 +11,6 @@ package Dev.Math.Distances is
    function Canberra (A : Float_Vector; B : Float_Vector) return Distance;
    function Euclidean (A : Float_Vector; B : Float_Vector) return Distance;
    function Euclidean2 (A : Float_Vector; B : Float_Vector) return Distance;
+   function Distance_Select (A : Float_Vector; B : Float_Vector; Kind : Kinds.Kind) return Distance;
 
 end;
