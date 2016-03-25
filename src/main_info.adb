@@ -9,10 +9,12 @@ with Ada.Containers.Indefinite_Vectors;
 with Ada.Assertions;
 with Ada.Strings.Fixed;
 with CBR;
+with CBR.Texts;
 
 procedure Main_Info is
 
    use CBR;
+   use CBR.Texts;
    use Ada.Numerics.Real_Arrays;
    use Ada.Text_IO;
    use Ada.Float_Text_IO;
@@ -35,8 +37,12 @@ begin
       Put (Integer (X.Length), 5);
       New_Line;
 
-      Put (Tail ("Class count ", 30));
+      Put (Tail ("Max class count ", 30));
       Put (Max_Class (X), 5);
+      New_Line;
+
+      Put (Tail ("Unique class count ", 30));
+      Put (Unique_Class_Count (X), 5);
       New_Line;
 
       Put (Tail ("Dimension count max ", 30));

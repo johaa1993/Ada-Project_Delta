@@ -1,14 +1,6 @@
 package body CBR is
 
-   procedure Set_Point_Dim_Count (X : out Asset_Vector; N : Count_Type) is
-      use Dev.Math.Float_Vectors;
-   begin
-      for E : Asset of X loop
-         Set_Length (E.Point, N);
-      end loop;
-   end;
-
-   procedure Read_Prominent (X : out Prominent_Vector; Name : String) is
+   procedure Read_Prominent (Item : out Prominent_Vector; Name : String) is
       use Prominent_Vectors;
       F : File_Type;
    begin
@@ -18,18 +10,18 @@ package body CBR is
             P : Prominent;
          begin
             Get_Append_Vector (F, P.P);
-            Append (X, P);
+            Append (Item, P);
             Skip_Line (F);
          end;
       end loop;
       Close (F);
    end;
 
-   procedure Read_Point (X : out Asset_Vector; Name : String) is
+   procedure Read_Point (Item : out Asset_Vector; Name : String) is
       F : File_Type;
    begin
       Open (F, In_File, Name);
-      for E : Asset of X loop
+      for E : Asset of Item loop
          Assert (not End_Of_Page (F), "The file " & Name & " has less rows than the class file.");
          Get_Append_Vector (F, E.Point);
          Skip_Line (F);
@@ -37,7 +29,7 @@ package body CBR is
       Close (F);
    end;
 
-   procedure Read_Class (X : out Asset_Vector; Name : String) is
+   procedure Read_Class (Item : out Asset_Vector; Name : String) is
       F : File_Type;
    begin
       Open (F, In_File, Name);
@@ -48,14 +40,14 @@ package body CBR is
             Get (F, A.Class);
             Get_Append_Vector (F, A.Point);
             A.Time := Natural (Line (F));
-            Asset_Vectors.Append (X, A);
+            Asset_Vectors.Append (Item, A);
             Skip_Line (F);
          end;
       end loop;
       Close (F);
    end;
 
-   procedure Read_Distance (X : out Asset_Vector; Name : String) is
+   procedure Read_Distance (Item : out Asset_Vector; Name : String) is
       F : File_Type;
    begin
       Open (F, In_File, Name);
@@ -66,18 +58,18 @@ package body CBR is
             Get (F, A.Class);
             Get_Append_Vector (F, A.Dis);
             A.Time := Natural (Line (F));
-            Asset_Vectors.Append (X, A);
+            Asset_Vectors.Append (Item, A);
             Skip_Line (F);
          end;
       end loop;
       Close (F);
    end;
 
-   procedure Write (X : Asset_Vector; Name : String) is
+   procedure Write (Item : Asset_Vector; Name : String) is
       F : File_Type;
    begin
       Create (F, Out_File, Name);
-      for E : Asset of X loop
+      for E : Asset of Item loop
          Put (F, E.Class);
          Put_Vector (F, E.Point, " ");
          New_Line (F);
@@ -85,11 +77,11 @@ package body CBR is
       Close (F);
    end;
 
-   procedure Write_Distance (X : Asset_Vector; Name : String) is
+   procedure Write_Distance (Item : Asset_Vector; Name : String) is
       F : File_Type;
    begin
       Create (F, Out_File, Name);
-      for E : Asset of X loop
+      for E : Asset of Item loop
          Put (F, E.Class);
          Put_Vector (F, E.Dis, " ");
          New_Line (F);
@@ -97,94 +89,45 @@ package body CBR is
       Close (F);
    end;
 
-   procedure Write_Correctness (X : Natural_Vector; Name : String) is
+   procedure Write_Correctness (Item : Natural_Vector; Name : String) is
       F : File_Type;
    begin
       Create (F, Out_File, Name);
-      for E : Natural of X loop
+      for E : Natural of Item loop
          Put (F, E, 4);
          New_Line (F);
       end loop;
       Close (F);
    end;
 
-   procedure Write_Prominent (X : Prominent_Vector; Name : String) is
+   procedure Write_Prominent (Item : Prominent_Vector; Name : String) is
       F : File_Type;
    begin
       Create (F, Out_File, Name);
-      for E : Prominent of X loop
+      for E : Prominent of Item loop
          Put_Vector (F, E.P, "");
          New_Line (F);
       end loop;
       Close (F);
    end;
 
-   procedure Put (X : Prominent_Vector) is
-   begin
-      Put (Tail ("K", 3));
-      Put ("|");
-      Put (Tail ("Prominent", 10));
-      New_Line;
-      for I in X.First_Index .. X.Last_Index loop
-         Put (I, 3);
-         Put ("|");
-         Put_Vector (X (I).P, "", 3);
-         New_Line;
-      end loop;
-   end;
-
-   procedure Put_Point (X : Asset_Vector) is
-      Fore : Field := 2;
-      Aft : Field := 3;
-   begin
-      Put (Tail ("Time", 6));
-      Put (Tail ("Class", 6));
-      Put (Tail ("Point", Get_Put_Float_Width (Fore, Aft)));
-      New_Line;
-      for E : Asset of X loop
-         Put (E.Time, 6);
-         Put (E.Class, 6);
-         Put_Vector (E.Point, "", Fore, Aft);
-         Put_Vector (E.Dis, "", Fore, Aft);
-         New_Line;
-      end loop;
-   end;
-
-   procedure Put_Distance (X : Asset_Vector) is
-      Fore : Field := 2;
-      Aft : Field := 3;
-   begin
-      Put (Tail ("Time", 6));
-      Put (Tail ("Class", 6));
-      Put (Tail ("Prominent", 10));
-      Put (Tail ("Distance", Get_Put_Float_Width (Fore, Aft)));
-      New_Line;
-      for E : Asset of X loop
-         Put (E.Time, 6);
-         Put (E.Class, 6);
-         Put (E.Prominent, 10);
-         Put_Vector (E.Dis, "", Fore, Aft);
-         New_Line;
-      end loop;
-   end;
-
-   procedure Calc_Distance (X : in out Asset_Vector; Y : Asset; Kind : Distances.Kinds.Kind) is
+   procedure Calc_Distance (Item : in out Asset_Vector; Sample : Asset; Kind : Distances.Kinds.Kind) is
       use Distance_Vectors;
       use Dev.Math.Distances;
    begin
-      for E : Asset of X loop
-         Append (E.Dis, Distance_Select (E.Point, Y.Point, Kind));
+      for E : Asset of Item loop
+         Append (E.Dis, Distance_Select (E.Point, Sample.Point, Kind));
       end loop;
    end;
 
-   procedure Calc_Distance (X : in out Asset_Vector; Y : Asset_Vector; Kind : Distances.Kinds.Kind) is
+   procedure Calc_Distance (Item : in out Asset_Vector; Sample : Asset_Vector; Kind : Distances.Kinds.Kind) is
    begin
-      for E : Asset of Y loop
-         Calc_Distance (X, E, Kind);
+      for E : Asset of Sample loop
+         Calc_Distance (Item, E, Kind);
       end loop;
    end;
 
-   procedure Calc_Prominent (X : in out Asset_Vector) is
+   procedure Calc_Prominent (Item : in out Asset_Vector) is
       use Class_Vectors;
       S : Class_Vector;
       M : Integer := -1;
@@ -192,7 +135,7 @@ package body CBR is
       N : Count_Type := 10;
    begin
       S := To_Vector (0, N);
-      for E : Asset of X loop
+      for E : Asset of Item loop
          S (E.Class) := S (E.Class) + 1;
          if M = S (E.Class) then
             T := 0;
@@ -204,16 +147,15 @@ package body CBR is
       end loop;
    end;
 
-   procedure Sort_Distance (X : in out Asset_Vector; I : Natural) is
-      function "<" (A, B : Asset) return Boolean is (A.Dis (I) < B.Dis (I));
+   procedure Sort_Distance (Item : in out Asset_Vector; Index : Natural) is
+      function "<" (A, B : Asset) return Boolean is (A.Dis (Index) < B.Dis (Index));
       package Sorting is new Asset_Vectors.Generic_Sorting ("<");
    begin
-      Sorting.Sort (X);
+      Sorting.Sort (Item);
    end;
 
    procedure Summarize (Item : in out Prominent_Vector; X : Asset_Vector) is
    begin
-      Assert (X.First_Index = Item.First_Index, "Index unequal.");
       for I in Item.First_Index .. Natural'Min (Item.Last_Index, X.Last_Index) loop
          Item (I).P (X (I).Prominent) := Item (I).P (X (I).Prominent) + 1;
       end loop;
@@ -228,28 +170,28 @@ package body CBR is
       Item := To_Vector (P, K_Count);
    end;
 
-   function Max_Class (X : Asset_Vector) return Natural is
+   function Max_Class (Item : Asset_Vector) return Natural is
       S : Natural := 0;
    begin
-      for E : Asset of X loop
+      for E : Asset of Item loop
          S := Natural'Max (S, E.Class);
       end loop;
       return S;
    end;
 
-   function Dim_Count_Max (X : Asset_Vector) return Natural is
+   function Dim_Count_Max (Item : Asset_Vector) return Natural is
       S : Natural := 0;
    begin
-      for E : Asset of X loop
+      for E : Asset of Item loop
          S := Natural'Max (S, Natural (E.Point.Length));
       end loop;
       return S;
    end;
 
-   function Dim_Count_Min (X : Asset_Vector) return Natural is
+   function Dim_Count_Min (Item : Asset_Vector) return Natural is
       S : Natural := Natural'Last;
    begin
-      for E : Asset of X loop
+      for E : Asset of Item loop
          S := Natural'Min (S, Natural (E.Point.Length));
       end loop;
       return S;
@@ -272,6 +214,22 @@ package body CBR is
       for E : Prominent of Item loop
          Append (Y, Evaluate (E, X));
       end loop;
+   end;
+
+   function Unique_Class_Count (Item : Asset_Vector) return Natural is
+      use Natural_Vectors;
+      N : Natural_Vector := To_Vector (0, Count_Type (Max_Class (Item)));
+      R : Natural := 0;
+   begin
+      for E : Asset of Item loop
+         N (E.Class) := N (E.Class) + 1;
+      end loop;
+      for E : Natural of N loop
+         if E > 0 then
+            R := R + 1;
+         end if;
+      end loop;
+      return R;
    end;
 
 end;

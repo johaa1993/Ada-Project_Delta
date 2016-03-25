@@ -45,10 +45,6 @@ package CBR is
    procedure Put_Vector is new Generic_Vectors_Put_Float_File (Natural, Distance, Distance_Vectors, Distance_IO);
    procedure Put_Vector is new Generic_Vectors_Put_Float_File (Natural, Float, Float_Vectors, Ada.Float_Text_IO);
 
-   procedure Put_Vector is new Generic_Vectors_Put_Integer (Natural, Natural, Class_Vectors, Class_IO);
-   procedure Put_Vector is new Generic_Vectors_Put_Float (Natural, Distance, Distance_Vectors, Distance_IO);
-   procedure Put_Vector is new Generic_Vectors_Put_Float (Natural, Float, Float_Vectors, Ada.Float_Text_IO);
-
    procedure Get_Append_Vector is new Generic_Get_Integer_File_Append_Vector (Natural, Natural, Class_Vectors, Class_IO);
    procedure Get_Append_Vector is new Generic_Get_Float_File_Append_Vector (Natural, Distance, Distance_Vectors, Distance_IO);
    procedure Get_Append_Vector is new Generic_Get_Float_File_Append_Vector (Natural, Float, Float_Vectors, Ada.Float_Text_IO);
@@ -73,35 +69,32 @@ package CBR is
 
 
 
-   procedure Read_Point (X : out Asset_Vector; Name : String);
-   procedure Read_Class (X : out Asset_Vector; Name : String);
-   procedure Read_Distance (X : out Asset_Vector; Name : String);
-   procedure Read_Prominent (X : out Prominent_Vector; Name : String);
+   procedure Read_Point (Item : out Asset_Vector; Name : String);
+   procedure Read_Class (Item : out Asset_Vector; Name : String);
+   procedure Read_Distance (Item : out Asset_Vector; Name : String);
+   procedure Read_Prominent (Item : out Prominent_Vector; Name : String);
 
-   procedure Put_Point (X : Asset_Vector);
-   procedure Put_Distance (X : Asset_Vector);
-   procedure Put (X : Prominent_Vector);
+   procedure Write (Item : Asset_Vector; Name : String);
+   procedure Write_Distance (Item : Asset_Vector; Name : String);
+   procedure Write_Correctness (Item : Natural_Vector; Name : String);
+   procedure Write_Prominent (Item : Prominent_Vector; Name : String);
 
-   procedure Write (X : Asset_Vector; Name : String);
-   procedure Write_Distance (X : Asset_Vector; Name : String);
-   procedure Write_Correctness (X : Natural_Vector; Name : String);
-   procedure Write_Prominent (X : Prominent_Vector; Name : String);
+   procedure Calc_Distance (Item : in out Asset_Vector; Sample : Asset_Vector; Kind : Distances.Kinds.Kind);
+   procedure Calc_Prominent (Item : in out Asset_Vector);
 
-   procedure Calc_Distance (X : in out Asset_Vector; Y : Asset_Vector; Kind : Distances.Kinds.Kind);
-   procedure Calc_Prominent (X : in out Asset_Vector);
+   function Dim_Count_Min (Item : Asset_Vector) return Natural;
+   function Dim_Count_Max (Item : Asset_Vector) return Natural;
 
-   function Dim_Count_Min (X : Asset_Vector) return Natural;
-   function Dim_Count_Max (X : Asset_Vector) return Natural;
+   procedure Summarize (Item : in out Prominent_Vector; X : Asset_Vector) with
+     Pre => Item.First_Index = X.First_Index;
 
-   procedure Summarize (Item : in out Prominent_Vector; X : Asset_Vector);
    procedure Initialize (Item : in out Prominent_Vector; Class_Count : Count_Type; K_Count : Count_Type);
    procedure Evaluate (Item : Prominent_Vector; X : Asset_Vector; Y : out Natural_Vector);
 
-   procedure Set_Point_Dim_Count (X : out Asset_Vector; N : Count_Type);
-   procedure Sort_Distance (X : in out Asset_Vector; I : Natural);
+   procedure Sort_Distance (Item : in out Asset_Vector; Index : Natural);
 
-   function Max_Class (X : Asset_Vector) return Natural;
-
+   function Max_Class (Item : Asset_Vector) return Natural;
+   function Unique_Class_Count (Item : Asset_Vector) return Natural;
 
 
 end;

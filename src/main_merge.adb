@@ -9,10 +9,12 @@ with Ada.Containers.Indefinite_Vectors;
 with Ada.Assertions;
 with Ada.Strings.Fixed;
 with CBR;
+with CBR.Texts;
 
 procedure Main_Merge is
 
    use CBR;
+   use CBR.Texts;
    use Ada.Numerics.Real_Arrays;
    use Ada.Text_IO;
    use Ada.Float_Text_IO;

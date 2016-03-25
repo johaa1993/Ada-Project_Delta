@@ -24,11 +24,14 @@ package body Dev.Math.Distances is
       end;
    end;
 
+   function Equal_Index  (A : Float_Vector; B : Float_Vector) return Boolean is
+   begin
+      return A.First_Index = B.First_Index and A.Last_Index = B.Last_Index;
+   end;
+
    function Manhattan (A : Float_Vector; B : Float_Vector) return Distance is
       S : Float := 0.0;
    begin
-      Assert (A.First_Index = B.First_Index, "A.First_Index /= B.First_Index");
-      Assert (A.Last_Index = B.Last_Index, "A.Last_Index /= B.Last_Index");
       for I in A.First_Index .. A.Last_Index loop
          S := S + abs (A (I) - B (I));
       end loop;
@@ -38,8 +41,6 @@ package body Dev.Math.Distances is
    function Canberra (A : Float_Vector; B : Float_Vector) return Distance is
       S : Float := 0.0;
    begin
-      Assert (A.First_Index = B.First_Index, "A.First_Index /= B.First_Index");
-      Assert (A.Last_Index = B.Last_Index, "A.Last_Index /= B.Last_Index");
       for I in A.First_Index .. A.Last_Index loop
          S := S + (if A (I) - B (I) = 0.0 then 0.0 else abs (A (I) - B (I)) / (abs A (I) + abs B (I)));
       end loop;
@@ -50,8 +51,6 @@ package body Dev.Math.Distances is
       use Ada.Numerics.Elementary_Functions;
       S : Float := 0.0;
    begin
-      Assert (A.First_Index = B.First_Index, "A.First_Index /= B.First_Index");
-      Assert (A.Last_Index = B.Last_Index, "A.Last_Index /= B.Last_Index");
       for I in A.First_Index .. A.Last_Index loop
          S := S + Sqrt ((A (I) - B (I)) ** 2);
       end loop;
@@ -61,8 +60,6 @@ package body Dev.Math.Distances is
    function Euclidean2 (A : Float_Vector; B : Float_Vector) return Distance is
       S : Float := 0.0;
    begin
-      Assert (A.First_Index = B.First_Index, "A.First_Index /= B.First_Index");
-      Assert (A.Last_Index = B.Last_Index, "A.Last_Index /= B.Last_Index");
       for I in A.First_Index .. A.Last_Index loop
          S := S + (A (I) - B (I)) ** 2;
       end loop;
