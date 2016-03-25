@@ -74,25 +74,40 @@ package CBR is
    procedure Read_Distance (Item : out Asset_Vector; Name : String);
    procedure Read_Prominent (Item : out Prominent_Vector; Name : String);
 
-   procedure Write (Item : Asset_Vector; Name : String);
+   procedure Write_Class (Item : Asset_Vector; Name : String);
    procedure Write_Distance (Item : Asset_Vector; Name : String);
    procedure Write_Correctness (Item : Natural_Vector; Name : String);
    procedure Write_Prominent (Item : Prominent_Vector; Name : String);
 
    procedure Calc_Distance (Item : in out Asset_Vector; Sample : Asset_Vector; Kind : Distances.Kinds.Kind);
+   -- Calculate distance to all assets for each sample.
+   -- This is the first step of CBR-KNN.
+
+   procedure Sort_Distance (Item : in out Asset_Vector; Index : Natural);
+   -- Sort by distance index.
+   -- Index represents the sample.
+   -- This is the second step of CBR-KNN.
+
    procedure Calc_Prominent (Item : in out Asset_Vector);
+   -- Calculate the most prominent classes.
+   -- This is the last step of CBR-KNN.
+
+
+   procedure Summarize (Summation : in out Prominent_Vector; Estimations : Asset_Vector) with Pre => Summation.First_Index = Estimations.First_Index;
+   -- Summarize all prominent estimation for all K.
+   -- This is used if we have multiple samples.
+
+   procedure Initialize (Item : in out Prominent_Vector; Class_Count : Count_Type; K_Count : Count_Type);
+
+
+   procedure Evaluate (Item : Prominent_Vector; Sample : Asset_Vector; Correctness : out Natural_Vector);
+   -- If sample have known classes then we can evaluate the prominent classes.
+   -- This is used if we have multiple samples.
+
+
 
    function Dim_Count_Min (Item : Asset_Vector) return Natural;
    function Dim_Count_Max (Item : Asset_Vector) return Natural;
-
-   procedure Summarize (Item : in out Prominent_Vector; X : Asset_Vector) with
-     Pre => Item.First_Index = X.First_Index;
-
-   procedure Initialize (Item : in out Prominent_Vector; Class_Count : Count_Type; K_Count : Count_Type);
-   procedure Evaluate (Item : Prominent_Vector; X : Asset_Vector; Y : out Natural_Vector);
-
-   procedure Sort_Distance (Item : in out Asset_Vector; Index : Natural);
-
    function Max_Class (Item : Asset_Vector) return Natural;
    function Unique_Class_Count (Item : Asset_Vector) return Natural;
 

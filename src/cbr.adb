@@ -65,7 +65,7 @@ package body CBR is
       Close (F);
    end;
 
-   procedure Write (Item : Asset_Vector; Name : String) is
+   procedure Write_Class (Item : Asset_Vector; Name : String) is
       F : File_Type;
    begin
       Create (F, Out_File, Name);
@@ -154,10 +154,10 @@ package body CBR is
       Sorting.Sort (Item);
    end;
 
-   procedure Summarize (Item : in out Prominent_Vector; X : Asset_Vector) is
+   procedure Summarize (Summation : in out Prominent_Vector; Estimations : Asset_Vector) is
    begin
-      for I in Item.First_Index .. Natural'Min (Item.Last_Index, X.Last_Index) loop
-         Item (I).P (X (I).Prominent) := Item (I).P (X (I).Prominent) + 1;
+      for I in Summation.First_Index .. Natural'Min (Summation.Last_Index, Estimations.Last_Index) loop
+         Summation (I).P (Estimations (I).Prominent) := Summation (I).P (Estimations (I).Prominent) + 1;
       end loop;
    end;
 
@@ -208,11 +208,11 @@ package body CBR is
       return S;
    end;
 
-   procedure Evaluate (Item : Prominent_Vector; X : Asset_Vector; Y : out Natural_Vector) is
+   procedure Evaluate (Item : Prominent_Vector; Sample : Asset_Vector; Correctness : out Natural_Vector) is
       use Natural_Vectors;
    begin
       for E : Prominent of Item loop
-         Append (Y, Evaluate (E, X));
+         Append (Correctness, Evaluate (E, Sample));
       end loop;
    end;
 

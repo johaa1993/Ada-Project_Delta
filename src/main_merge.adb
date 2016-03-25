@@ -51,7 +51,7 @@ begin
    for I in 2 .. Argument_Count loop
       if Argument (I) (1 .. 2) = "-o" then
          Assert (Argument_Count = I + 1, "Missing Out_File");
-         Write (X, Argument (I + 1));
+         Write_Class (X, Argument (I + 1));
       end if;
       Read_Point (X, Argument (I));
       if I = Argument_Count then

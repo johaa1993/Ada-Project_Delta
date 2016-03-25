@@ -56,7 +56,7 @@ procedure Main_Normalize is
 
    Help_Text_1 : constant String := "<Asset_File>";
    Help_Text_2 : constant String := "<Asset_File> <Out_Asset_File_Normalized>";
-   Help_Text_3 : constant String := "<Asset_File_Min_Max> <Asset_File> <Out_Asset_File_Normalized>";
+   Help_Text_3 : constant String := "<Asset_Min_Max_File> <Asset_File> <Out_Asset_File_Normalized>";
 
 begin
 
@@ -72,14 +72,14 @@ begin
       Set_Min_Max (X, Min, Max);
       Find_Min_Max (X, Min, Max);
       Normalize (X, Min, Max);
-      Write (X, Argument (2));
+      Write_Class (X, Argument (2));
    elsif Argument_Count = 3 then
       Read_Class (X, Argument (1));
       Set_Min_Max (X, Min, Max);
       Find_Min_Max (X, Min, Max);
       Read_Class (Y, Argument (2));
       Normalize (Y, Min, Max);
-      Write (Y, Argument (3));
+      Write_Class (Y, Argument (3));
    else
       Put_Line ("Usage");
       Put_Line (Help_Text_1);
