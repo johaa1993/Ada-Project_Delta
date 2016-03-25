@@ -37,7 +37,7 @@ begin
       Read_Class (X, Argument (1));
       Read_Class (Y, Argument (2));
       Calc_Distance (X, Y, Dev.Math.Distances.Kinds.Value (Argument (3)));
-      Put_Dis (X);
+      Put_Distance (X);
    elsif Argument_Count = 4 then
       Read_Class (X, Argument (1));
       Read_Class (Y, Argument (2));

@@ -78,8 +78,8 @@ package CBR is
    procedure Read_Distance (X : out Asset_Vector; Name : String);
    procedure Read_Prominent (X : out Prominent_Vector; Name : String);
 
-   procedure Put (X : Asset_Vector);
-   procedure Put_Dis (X : Asset_Vector);
+   procedure Put_Point (X : Asset_Vector);
+   procedure Put_Distance (X : Asset_Vector);
    procedure Put (X : Prominent_Vector);
 
    procedure Write (X : Asset_Vector; Name : String);
@@ -93,11 +93,13 @@ package CBR is
    function Dim_Count_Min (X : Asset_Vector) return Natural;
    function Dim_Count_Max (X : Asset_Vector) return Natural;
 
-   procedure Summarize_Prominent (X : Asset_Vector; Y : in out Prominent_Vector);
-   procedure Init_Prominent (X : in out Prominent_Vector; Class_Count : Count_Type; K_Count : Count_Type);
+   procedure Summarize (Item : in out Prominent_Vector; X : Asset_Vector);
+   procedure Initialize (Item : in out Prominent_Vector; Class_Count : Count_Type; K_Count : Count_Type);
+   procedure Evaluate (Item : Prominent_Vector; X : Asset_Vector; Y : out Natural_Vector);
+
    procedure Set_Point_Dim_Count (X : out Asset_Vector; N : Count_Type);
    procedure Sort_Distance (X : in out Asset_Vector; I : Natural);
-   procedure Eval_Prominent (P : Prominent_Vector; X : Asset_Vector; Y : out Natural_Vector);
+
    function Max_Class (X : Asset_Vector) return Natural;
 
 

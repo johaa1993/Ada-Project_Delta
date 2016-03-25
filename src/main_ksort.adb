@@ -22,47 +22,39 @@ procedure Main_Ksort is
    use Ada.Containers;
    use Ada.Strings.Fixed;
 
-   procedure Calc_Put (X : in out Asset_Vectors.Vector; P : in out Prominent_Vectors.Vector) is
+   procedure Calc (X : in out Asset_Vector; P : in out Prominent_Vector) is
    begin
       for I in X.First_Element.Dis.First_Index .. X.First_Element.Dis.Last_Index loop
          Sort_Distance (X, I);
          Calc_Prominent (X);
-         Summarize_Prominent (X, P);
-         Put_Dis (X);
+         Summarize (P, X);
       end loop;
    end;
 
-   procedure Calc (X : in out Asset_Vectors.Vector; P : in out Prominent_Vectors.Vector) is
-   begin
-      for I in X.First_Element.Dis.First_Index .. X.First_Element.Dis.Last_Index loop
-         Sort_Distance (X, I);
-         Calc_Prominent (X);
-         Summarize_Prominent (X, P);
-      end loop;
-   end;
+   X : Asset_Vector;
+   P : Prominent_Vector;
 
-   X : Asset_Vectors.Vector;
-   P : Prominent_Vectors.Vector;
-
-   Help_Text_1 : constant String := "<Distance_File>";
-   Help_Text_2 : constant String := "<Distance_File> <Out_Prominent_File>";
+   Help_Text_1 : constant String := "<Distance_File> <K_Count>";
+   Help_Text_2 : constant String := "<Distance_File> <K_Count> <Out_Prominent_File>";
 
 begin
 
-   if Argument_Count = 1 then
+   if Argument_Count = 2 then
       Read_Distance (X, Argument (1));
-      Init_Prominent (P, 10, 3);
-      Put_Dis (X);
-      Calc_Put (X, P);
+      --Include 0 as unknown class
+      Initialize (P, Count_Type (Max_Class (X) + 1), Count_Type'Value (Argument (2)));
+      Put_Distance (X);
+      Calc (X, P);
+      Put_Distance (X);
       New_Line (3);
       Put (P);
-   elsif Argument_Count = 2 then
+   elsif Argument_Count = 3 then
       Read_Distance (X, Argument (1));
-      Init_Prominent (P, 10, 3);
+      Initialize (P, Count_Type (Max_Class (X) + 1), Count_Type'Value (Argument (2)));
       Calc (X, P);
-      Write_Prominent (P, Argument (2));
+      Write_Prominent (P, Argument (3));
    else
-      Put_Line ("Argument_Count must be 1 or 2.");
+      Put_Line ("Argument_Count must be 2 or 3.");
       Put_Line ("Usage: " & Help_Text_1);
       Put_Line ("Usage: " & Help_Text_2);
    end if;

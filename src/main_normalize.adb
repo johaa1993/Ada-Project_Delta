@@ -64,7 +64,7 @@ begin
       Set_Min_Max (X, Min, Max);
       Find_Min_Max (X, Min, Max);
       Normalize (X, Min, Max);
-      Put (X);
+      Put_Point (X);
    elsif Argument_Count = 2 then
       Read_Class (X, Argument (1));
       Set_Min_Max (X, Min, Max);

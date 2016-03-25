@@ -53,7 +53,7 @@ begin
       end if;
       Read_Point (X, Argument (I));
       if I = Argument_Count then
-         Put (X);
+         Put_Point (X);
       end if;
    end loop;
 
@@ -62,6 +62,6 @@ begin
 
 
    New_Line;
-   Put (X);
+   Put_Point (X);
 
 end;

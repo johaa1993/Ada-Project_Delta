@@ -133,7 +133,7 @@ package body CBR is
       end loop;
    end;
 
-   procedure Put (X : Asset_Vector ) is
+   procedure Put_Point (X : Asset_Vector) is
       Fore : Field := 2;
       Aft : Field := 3;
    begin
@@ -150,7 +150,7 @@ package body CBR is
       end loop;
    end;
 
-   procedure Put_Dis (X : Asset_Vector) is
+   procedure Put_Distance (X : Asset_Vector) is
       Fore : Field := 2;
       Aft : Field := 3;
    begin
@@ -228,20 +228,23 @@ package body CBR is
       Sorting.Sort (X);
    end;
 
-   procedure Summarize_Prominent (X : Asset_Vector; Y : in out Prominent_Vector) is
+   procedure Summarize (Item : in out Prominent_Vector; X : Asset_Vector) is
    begin
-      for I in Y.First_Index .. Y.Last_Index loop
-         Y (I).P (X (I).Prominent) := Y (I).P (X (I).Prominent) + 1;
+      Assert (X.First_Index = Item.First_Index, "Index unequal.");
+      for I in Item.First_Index .. Natural'Min (Item.Last_Index, X.Last_Index) loop
+         Item (I).P (X (I).Prominent) := Item (I).P (X (I).Prominent) + 1;
       end loop;
    end;
 
-   procedure Init_Prominent (X : in out Prominent_Vector; Class_Count : Count_Type; K_Count : Count_Type) is
+   procedure Initialize (Item : in out Prominent_Vector; Class_Count : Count_Type; K_Count : Count_Type) is
+      use Prominent_Vectors;
+      use Class_Vectors;
    begin
-      X.Set_Length (K_Count);
-      for E : Prominent of X loop
-         E.P.Set_Length (Class_Count);
-         for E1 : Natural of E.P loop
-            E1 := 0;
+      Set_Length (Item, K_Count);
+      for P : Prominent of Item loop
+         Set_Length (P.P, Class_Count);
+         for C : Natural of P.P loop
+            C := 0;
          end loop;
       end loop;
    end;
@@ -273,22 +276,22 @@ package body CBR is
       return S;
    end;
 
-   function Eval_Prominent (P : Prominent; X : Asset_Vector) return Natural is
+   function Evaluate (Item : Prominent; X : Asset_Vector) return Natural is
       S : Natural := 0;
    begin
       for E : Asset of X loop
-         if P.P (E.Class) > 0 then
+         if Item.P (E.Class) > 0 then
             S := S + 1;
          end if;
       end loop;
       return S;
    end;
 
-   procedure Eval_Prominent (P : Prominent_Vector; X : Asset_Vector; Y : out Natural_Vector) is
+   procedure Evaluate (Item : Prominent_Vector; X : Asset_Vector; Y : out Natural_Vector) is
       use Natural_Vectors;
    begin
-      for E : Prominent of P loop
-         Append (Y, Eval_Prominent (E, X));
+      for E : Prominent of Item loop
+         Append (Y, Evaluate (E, X));
       end loop;
    end;
 

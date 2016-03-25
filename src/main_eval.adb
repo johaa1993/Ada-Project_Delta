@@ -34,7 +34,7 @@ begin
    if Argument_Count = 2 then
       Read_Prominent (P, Argument (1));
       Read_Class (S, Argument (2));
-      Eval_Prominent (P, S, N);
+      Evaluate (P, S, N);
       Put (Tail ("K", 3));
       Put (Tail ("Correct", 10));
       New_Line;
@@ -46,7 +46,7 @@ begin
    elsif Argument_Count = 3 then
       Read_Prominent (P, Argument (1));
       Read_Class (S, Argument (2));
-      Eval_Prominent (P, S, N);
+      Evaluate (P, S, N);
       Write_Correctness (N, Argument (3));
    else
       Put_Line ("Argument_Count must be 2.");

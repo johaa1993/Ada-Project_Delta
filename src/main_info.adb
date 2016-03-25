@@ -48,7 +48,7 @@ begin
       New_Line;
 
       New_Line;
-      Put (X);
+      Put_Point (X);
    else
       Put_Line ("Usage");
       Put_Line (Help_Text_1);
