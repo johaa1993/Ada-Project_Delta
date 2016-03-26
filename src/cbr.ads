@@ -67,8 +67,6 @@ package CBR is
    subtype Asset_Vector is Asset_Vectors.Vector;
    subtype Prominent_Vector is Prominent_Vectors.Vector;
 
-
-
    procedure Read_Point (Item : out Asset_Vector; Name : String);
    procedure Read_Class (Item : out Asset_Vector; Name : String);
    procedure Read_Distance (Item : out Asset_Vector; Name : String);
@@ -92,24 +90,19 @@ package CBR is
    -- Calculate the most prominent classes.
    -- This is the last step of CBR-KNN.
 
-
    procedure Summarize (Summation : in out Prominent_Vector; Estimations : Asset_Vector) with Pre => Summation.First_Index = Estimations.First_Index;
    -- Summarize all prominent estimation for all K.
    -- This is used if we have multiple samples.
 
    procedure Initialize (Item : in out Prominent_Vector; Class_Count : Count_Type; K_Count : Count_Type);
 
-
    procedure Evaluate (Item : Prominent_Vector; Sample : Asset_Vector; Correctness : out Natural_Vector);
    -- If sample have known classes then we can evaluate the prominent classes.
    -- This is used if we have multiple samples.
-
-
 
    function Dim_Count_Min (Item : Asset_Vector) return Natural;
    function Dim_Count_Max (Item : Asset_Vector) return Natural;
    function Max_Class (Item : Asset_Vector) return Natural;
    function Unique_Class_Count (Item : Asset_Vector) return Natural;
-
 
 end;
