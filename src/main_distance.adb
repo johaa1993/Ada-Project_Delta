@@ -10,12 +10,14 @@ with Ada.Assertions;
 with Ada.Strings.Fixed;
 with CBR;
 with CBR.Texts;
+with CBR.Readings;
 with Dev.Math.Distances;
 
 procedure Main_Distance is
 
    use CBR;
    use CBR.Texts;
+   use CBR.Readings;
    use Ada.Numerics.Real_Arrays;
    use Ada.Text_IO;
    use Ada.Float_Text_IO;

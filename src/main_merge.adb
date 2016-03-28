@@ -10,11 +10,13 @@ with Ada.Assertions;
 with Ada.Strings.Fixed;
 with CBR;
 with CBR.Texts;
+with CBR.Readings;
 
 procedure Main_Merge is
 
    use CBR;
    use CBR.Texts;
+   use CBR.Readings;
    use Ada.Numerics.Real_Arrays;
    use Ada.Text_IO;
    use Ada.Float_Text_IO;
@@ -31,39 +33,24 @@ procedure Main_Merge is
 
 begin
 
-
-   if Argument_Count <= 1 then
-      Put_Line ("Argument List");
-      for I in 1 .. Argument_Count loop
-         Put (I, 3);
-         Put (" ");
-         Put (Argument (I));
-         New_Line;
+   if Argument_Count > 1 then
+      Read_Class (X, Argument (1));
+      for I in 2 .. Argument_Count loop
+         if Argument (I) (1 .. 2) = "-o" then
+            Assert (Argument_Count = I + 1, "Missing Out_File");
+            Write_Class (X, Argument (I + 1));
+            return;
+         else
+            Read_Point (X, Argument (I));
+         end if;
       end loop;
+   else
       Put_Line ("Argument_Count is not larger than 1.");
       Put_Line ("Usage: " & Help_Text_1);
       Put_Line ("Usage: " & Help_Text_2);
-      return;
    end if;
 
-   Read_Class (X, Argument (1));
 
-   for I in 2 .. Argument_Count loop
-      if Argument (I) (1 .. 2) = "-o" then
-         Assert (Argument_Count = I + 1, "Missing Out_File");
-         Write_Class (X, Argument (I + 1));
-      end if;
-      Read_Point (X, Argument (I));
-      if I = Argument_Count then
-         Put_Point (X);
-      end if;
-   end loop;
-
-
-
-
-
-   New_Line;
    Put_Point (X);
 
 end;

@@ -10,11 +10,13 @@ with Ada.Assertions;
 with Ada.Strings.Fixed;
 with CBR;
 with CBR.Texts;
+with CBR.Readings;
 
 procedure Main_Ksort is
 
    use CBR;
    use CBR.Texts;
+   use CBR.Readings;
    use Ada.Numerics.Real_Arrays;
    use Ada.Text_IO;
    use Ada.Float_Text_IO;
@@ -45,10 +47,7 @@ begin
       Read_Distance (X, Argument (1));
       --Include 0 as unknown class
       Initialize (P, Count_Type (Max_Class (X) + 1), Count_Type'Value (Argument (2)));
-      Put_Distance (X);
       Calc (X, P);
-      Put_Distance (X);
-      New_Line (3);
       Put (P);
    elsif Argument_Count = 3 then
       Read_Distance (X, Argument (1));

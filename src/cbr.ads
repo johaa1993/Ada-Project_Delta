@@ -45,10 +45,6 @@ package CBR is
    procedure Put_Vector is new Generic_Vectors_Put_Float_File (Natural, Distance, Distance_Vectors, Distance_IO);
    procedure Put_Vector is new Generic_Vectors_Put_Float_File (Natural, Float, Float_Vectors, Ada.Float_Text_IO);
 
-   procedure Get_Append_Vector is new Generic_Get_Integer_File_Append_Vector (Natural, Natural, Class_Vectors, Class_IO);
-   procedure Get_Append_Vector is new Generic_Get_Float_File_Append_Vector (Natural, Distance, Distance_Vectors, Distance_IO);
-   procedure Get_Append_Vector is new Generic_Get_Float_File_Append_Vector (Natural, Float, Float_Vectors, Ada.Float_Text_IO);
-
    type Asset is record
       Time : Natural := 0;
       Class : Natural := 0;
@@ -66,11 +62,6 @@ package CBR is
 
    subtype Asset_Vector is Asset_Vectors.Vector;
    subtype Prominent_Vector is Prominent_Vectors.Vector;
-
-   procedure Read_Point (Item : out Asset_Vector; Name : String);
-   procedure Read_Class (Item : out Asset_Vector; Name : String);
-   procedure Read_Distance (Item : out Asset_Vector; Name : String);
-   procedure Read_Prominent (Item : out Prominent_Vector; Name : String);
 
    procedure Write_Class (Item : Asset_Vector; Name : String);
    procedure Write_Distance (Item : Asset_Vector; Name : String);
