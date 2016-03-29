@@ -14,6 +14,12 @@ package body CBR.Texts is
       Put (Tail ("Prominent", 10));
    end;
 
+   procedure Put_Prominent_Class_Wise_Header is
+   begin
+      Put ("  ");
+      Put ("Prominent Class-wise");
+   end;
+
    procedure Put_Time_Header is
    begin
       Put (Tail ("Time", 6));
@@ -38,7 +44,7 @@ package body CBR.Texts is
    begin
       Put_K_Header;
       Put ("|");
-      Put_Prominent_Header;
+      Put_Prominent_Class_Wise_Header;
       New_Line;
       for I in Item.First_Index .. Item.Last_Index loop
          Put (I, 3);
@@ -71,14 +77,42 @@ package body CBR.Texts is
    begin
       Put_Time_Header;
       Put_Class_Header;
-      Put_Prominent_Header;
       Put_Distance_Header;
       New_Line;
       for E : Asset of Item loop
          Put (E.Time, 6);
          Put (E.Class, 6);
-         Put (E.Prominent, 10);
          Put_Vector (E.Dis, "", Fore, Aft);
+         New_Line;
+      end loop;
+   end;
+
+   procedure Put_Prominent (Item : Asset_Vector) is
+      Fore : Field := 2;
+      Aft : Field := 3;
+   begin
+      Put_Time_Header;
+      Put_Class_Header;
+      Put_Prominent_Header;
+      New_Line;
+      for E : Asset of Item loop
+         Put (E.Time, 6);
+         Put (E.Class, 6);
+         Put (E.Prominent, 10);
+         New_Line;
+      end loop;
+   end;
+
+   procedure Put_Class (Item : Asset_Vector) is
+      Fore : Field := 2;
+      Aft : Field := 3;
+   begin
+      Put_Time_Header;
+      Put_Class_Header;
+      New_Line;
+      for E : Asset of Item loop
+         Put (E.Time, 6);
+         Put (E.Class, 6);
          New_Line;
       end loop;
    end;

@@ -132,18 +132,19 @@ package body CBR is
       return S;
    end;
 
-   function Evaluate (Item : Prominent; X : Asset_Vector) return Natural is
+   function Evaluate (Item : in out Prominent; X : Asset_Vector) return Natural is
       S : Natural := 0;
    begin
       for E : Asset of X loop
          if Item.P (E.Class) > 0 then
+            Item.P (E.Class) := Item.P (E.Class) - 1;
             S := S + 1;
          end if;
       end loop;
       return S;
    end;
 
-   procedure Evaluate (Item : Prominent_Vector; Sample : Asset_Vector; Correctness : out Natural_Vector) is
+   procedure Evaluate (Item : in out Prominent_Vector; Sample : Asset_Vector; Correctness : out Natural_Vector) is
       use Natural_Vectors;
    begin
       for E : Prominent of Item loop

@@ -74,7 +74,7 @@ package CBR is
 
    procedure Sort_Distance (Item : in out Asset_Vector; Index : Natural);
    -- Sort by distance index.
-   -- Index represents the sample.
+   -- Index represents the sample to be sorted.
    -- This is the second step of CBR-KNN.
 
    procedure Calc_Prominent (Item : in out Asset_Vector);
@@ -87,7 +87,7 @@ package CBR is
 
    procedure Initialize (Item : in out Prominent_Vector; Class_Count : Count_Type; K_Count : Count_Type);
 
-   procedure Evaluate (Item : Prominent_Vector; Sample : Asset_Vector; Correctness : out Natural_Vector);
+   procedure Evaluate (Item : in out Prominent_Vector; Sample : Asset_Vector; Correctness : out Natural_Vector);
    -- If sample have known classes then we can evaluate the prominent classes.
    -- This is used if we have multiple samples.
 
