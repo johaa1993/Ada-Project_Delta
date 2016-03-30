@@ -1,8 +1,5 @@
 package body CBR.Texts is
 
-   procedure Put_Vector is new Generic_Vectors_Put_Integer (Natural, Natural, Class_Vectors, Class_IO);
-   procedure Put_Vector is new Generic_Vectors_Put_Float (Natural, Distance, Distance_Vectors, Distance_IO);
-   procedure Put_Vector is new Generic_Vectors_Put_Float (Natural, Float, Float_Vectors, Ada.Float_Text_IO);
 
    procedure Put_K_Header is
    begin
@@ -32,12 +29,46 @@ package body CBR.Texts is
 
    procedure Put_Point_Header is
    begin
-      Put (Tail ("Point", Get_Put_Float_Width (2, 3)));
+      Put (Tail ("Point", 8));
    end;
 
    procedure Put_Distance_Header is
    begin
-      Put (Tail ("Distance", Get_Put_Float_Width (2, 3)));
+      Put (Tail ("Distance", 8));
+   end;
+
+   procedure Put_Class (Item : Asset) is
+   begin
+      Put (Item.Class, 4);
+   end;
+
+   procedure Put_Time (Item : Asset) is
+   begin
+      Put (Item.Time, 4);
+   end;
+
+   procedure Put_Prominent (Item : Prominent) is
+   begin
+      for E of Item.P loop
+         Put (",");
+         Put (E, 4);
+      end loop;
+   end;
+
+   procedure Put_Point (Item : Asset) is
+   begin
+      for E of Item.Point loop
+         Put (",");
+         Put (E);
+      end loop;
+   end;
+
+   procedure Put_Distance_Vector (Item : Asset) is
+   begin
+      for E of Item.Dis loop
+         Put (",");
+         Put (E);
+      end loop;
    end;
 
    procedure Put (Item : Prominent_Vector) is
@@ -49,14 +80,12 @@ package body CBR.Texts is
       for I in Item.First_Index .. Item.Last_Index loop
          Put (I, 3);
          Put ("|");
-         Put_Vector (Item (I).P, "", 3);
+         Put_Prominent (Item (I));
          New_Line;
       end loop;
    end;
 
    procedure Put_Point (Item : Asset_Vector) is
-      Fore : Field := 2;
-      Aft : Field := 3;
    begin
       Put_Time_Header;
       Put_Class_Header;
@@ -65,8 +94,8 @@ package body CBR.Texts is
       for E : Asset of Item loop
          Put (E.Time, 6);
          Put (E.Class, 6);
-         Put_Vector (E.Point, "", Fore, Aft);
-         Put_Vector (E.Dis, "", Fore, Aft);
+         Put_Point (E);
+         Put_Distance_Vector (E);
          New_Line;
       end loop;
    end;
@@ -80,9 +109,9 @@ package body CBR.Texts is
       Put_Distance_Header;
       New_Line;
       for E : Asset of Item loop
-         Put (E.Time, 6);
-         Put (E.Class, 6);
-         Put_Vector (E.Dis, "", Fore, Aft);
+         Put_Time (E);
+         Put_Class (E);
+         Put_Distance_Vector (E);
          New_Line;
       end loop;
    end;

@@ -12,12 +12,16 @@ with CBR;
 with CBR.Texts;
 with CBR.Readings;
 with Dev.Math.Distances;
+with Dev.Math;
+with Dev.Args;
 
 procedure Main_Distance is
 
    use CBR;
    use CBR.Texts;
    use CBR.Readings;
+   use Dev.Math;
+   use Dev.Args;
    use Ada.Numerics.Real_Arrays;
    use Ada.Text_IO;
    use Ada.Float_Text_IO;
@@ -29,29 +33,55 @@ procedure Main_Distance is
 
    X : Asset_Vectors.Vector;
    Y : Asset_Vectors.Vector;
+   W : Float_Vectors.Vector;
+   D : Distances.Kinds.Kind;
 
-   Help_Text_1 : constant String := "<Asset_File> <Sample_File> <Distance_Type>";
-   Help_Text_2 : constant String := "<Asset_File> <Sample_File> <Distance_Type> <Out_Distance_File>";
-
-
+   P : Natural;
+   W0 : Float;
 
 begin
 
-   if Argument_Count = 3 then
-      Read_Class (X, Argument (1));
-      Read_Class (Y, Argument (2));
-      Calc_Distance (X, Y, Dev.Math.Distances.Kinds.Value (Argument (3)));
-      Put_Distance (X);
-   elsif Argument_Count = 4 then
-      Read_Class (X, Argument (1));
-      Read_Class (Y, Argument (2));
-      Calc_Distance (X, Y, Dev.Math.Distances.Kinds.Value (Argument (3)));
-      Write_Distance (X, Argument (4));
-   else
-      Put_Line ("Argument_Count must be 3 or 4.");
-      Put_Line ("Usage: " & Help_Text_1);
-      Put_Line ("Usage: " & Help_Text_2);
+   if Find_Argument ("-help") > 0 then
+      Put_Line ("Help text");
+      return;
    end if;
+
+   P := Find_Argument ("-db");
+   Assert (P > 0, "Missing database file -db flag");
+   Read_Class (X, Get_Argument_Value (P + 1));
+
+   P := Find_Argument ("-s");
+   Assert (P > 0, "Missing sample file -s flag");
+   Read_Class (Y, Get_Argument_Value (P + 1));
+
+   P := Find_Argument ("-d");
+   Assert (P > 0, "Missing distance type -d flag");
+   D := Distances.Kinds.Value (Argument (P + 1));
+
+   P := Find_Argument ("-w") + 1;
+   Assert (P > 0, "Missing weight -w flag");
+   while Get (P, W0) loop
+      W.Append (W0);
+   end loop;
+   Put_Line ("Found " & W.Length'Img & " weights.");
+
+   for E : Asset of X loop
+      Assert (E.Point.Length = W.Length, "Number of weights is not equal number of dimension.");
+   end loop;
+
+   for E : Asset of Y loop
+      Assert (E.Point.Length = W.Length, "Number of weights is not equal number of dimension.");
+   end loop;
+
+   Calc_Distance (X, Y, D, W);
+
+   P := Find_Argument ("-o");
+   if P > 0 then
+      Write_Distance (X, Argument (P + 1));
+   else
+      Put_Distance (X);
+   end if;
+
 
 end;
 

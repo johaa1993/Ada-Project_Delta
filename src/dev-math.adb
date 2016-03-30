@@ -1,9 +1,15 @@
+with Ada.Assertions;
+with Ada.Text_IO;
+with Ada.Float_Text_IO;
+
 package body Dev.Math is
 
    procedure Dummy is null;
 
    function Normalize (Value : Float; Min, Max : Float) return Float is
+      use Ada.Assertions;
    begin
+      Assert (Min - Max /= 0.0, "Normalize Min - Max = 0.0");
       return (Value - Min) / (Max - Min);
    end;
 

@@ -12,7 +12,6 @@ with Ada.Numerics.Elementary_Functions;
 
 with Dev.Math;
 with Dev.Math.Distances;
-with Dev.Texts;
 
 package CBR is
 
@@ -27,7 +26,6 @@ package CBR is
    use Ada.Strings.Fixed;
 
    use Dev.Math;
-   use Dev.Texts;
 
    package Class_Vectors is new Ada.Containers.Vectors (Natural, Natural);
    package Natural_Vectors is new Ada.Containers.Vectors (Positive, Natural);
@@ -36,14 +34,6 @@ package CBR is
    subtype Class_Vector is Class_Vectors.Vector;
    subtype Natural_Vector is Natural_Vectors.Vector;
    subtype Distance_Vector is Distance_Vectors.Vector;
-
-   package Class_IO is new Ada.Text_IO.Integer_IO (Natural);
-   package Natural_IO is new Ada.Text_IO.Integer_IO (Natural);
-   package Distance_IO is new Ada.Text_IO.Float_IO (Distance);
-
-   procedure Put_Vector is new Generic_Vectors_Put_Integer_File (Natural, Natural, Class_Vectors, Class_IO);
-   procedure Put_Vector is new Generic_Vectors_Put_Float_File (Natural, Distance, Distance_Vectors, Distance_IO);
-   procedure Put_Vector is new Generic_Vectors_Put_Float_File (Natural, Float, Float_Vectors, Ada.Float_Text_IO);
 
    type Asset is record
       Time : Natural := 0;
@@ -68,7 +58,7 @@ package CBR is
    procedure Write_Correctness (Item : Natural_Vector; Name : String);
    procedure Write_Prominent (Item : Prominent_Vector; Name : String);
 
-   procedure Calc_Distance (Item : in out Asset_Vector; Sample : Asset_Vector; Kind : Distances.Kinds.Kind);
+   procedure Calc_Distance (Item : in out Asset_Vector; Sample : Asset_Vector; Kind : Distances.Kinds.Kind; W : Float_Vector);
    -- Calculate distance to all assets for each sample.
    -- This is the first step of CBR-KNN.
 

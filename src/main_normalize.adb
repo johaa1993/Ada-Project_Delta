@@ -12,10 +12,12 @@ with CBR;
 with CBR.Texts;
 with CBR.Readings;
 with Dev.Math;
+with Dev.Args;
 
 procedure Main_Normalize is
 
    use Dev.Math;
+   use Dev.Args;
    use CBR;
    use CBR.Texts;
    use CBR.Readings;
@@ -52,9 +54,9 @@ procedure Main_Normalize is
    end;
 
    X : Asset_Vector;
-   Y : Asset_Vector;
    Min : Float_Vector;
    Max : Float_Vector;
+   P : Natural;
 
    Help_Text_1 : constant String := "<Asset_File>";
    Help_Text_2 : constant String := "<Asset_File> <Out_Asset_File_Normalized>";
@@ -62,31 +64,32 @@ procedure Main_Normalize is
 
 begin
 
+   if Find_Argument ("-help") > 0 then
+      Put_Line ("Help text");
+      return;
+   end if;
 
-   if Argument_Count = 1 then
-      Read_Class (X, Argument (1));
-      Set_Min_Max (X, Min, Max);
-      Find_Min_Max (X, Min, Max);
-      Normalize (X, Min, Max);
-      Put_Point (X);
-   elsif Argument_Count = 2 then
-      Read_Class (X, Argument (1));
-      Set_Min_Max (X, Min, Max);
-      Find_Min_Max (X, Min, Max);
-      Normalize (X, Min, Max);
-      Write_Class (X, Argument (2));
-   elsif Argument_Count = 3 then
-      Read_Class (X, Argument (1));
-      Set_Min_Max (X, Min, Max);
-      Find_Min_Max (X, Min, Max);
-      Read_Class (Y, Argument (2));
-      Normalize (Y, Min, Max);
-      Write_Class (Y, Argument (3));
+
+
+   P := Find_Argument ("-mm");
+   Assert (P > 0, "Missing database file -db flag");
+   Read_Class (X, Get_Argument_Value (P + 1));
+   Set_Min_Max (X, Min, Max);
+   Find_Min_Max (X, Min, Max);
+
+   P := Find_Argument ("-data");
+   if P > 0 then
+      X.Set_Length (0);
+      Read_Class (X, Get_Argument_Value (P + 1));
+   end if;
+
+   Normalize (X, Min, Max);
+
+   P := Find_Argument ("-o");
+   if P > 0 then
+      Write_Class (X, Get_Argument_Value (P + 1));
    else
-      Put_Line ("Usage");
-      Put_Line (Help_Text_1);
-      Put_Line (Help_Text_2);
-      Put_Line (Help_Text_3);
+      Put_Point (X);
    end if;
 
 end;
