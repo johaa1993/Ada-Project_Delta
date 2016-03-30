@@ -1,6 +1,12 @@
-with Ada.Characters.Handling;
+with Ada.Text_IO;
+with Ada.Integer_Text_IO;
+with Ada.Float_Text_IO;
 
 package body CBR.Readings is
+
+   use Ada.Text_IO;
+   use Ada.Integer_Text_IO;
+   use Ada.Float_Text_IO;
 
    procedure Skip_Space (F : File_Type) is
       EOL : Boolean;

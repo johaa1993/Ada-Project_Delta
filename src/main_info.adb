@@ -1,12 +1,6 @@
 with Ada.Text_IO;
 with Ada.Command_Line;
-with Ada.Float_Text_IO;
 with Ada.Integer_Text_IO;
-with Ada.Numerics.Real_Arrays;
-with Ada.Containers.Formal_Vectors;
-with Ada.Containers.Vectors;
-with Ada.Containers.Indefinite_Vectors;
-with Ada.Assertions;
 with Ada.Strings.Fixed;
 with CBR;
 with CBR.Texts;
@@ -17,13 +11,9 @@ procedure Main_Info is
    use CBR;
    use CBR.Texts;
    use CBR.Readings;
-   use Ada.Numerics.Real_Arrays;
    use Ada.Text_IO;
-   use Ada.Float_Text_IO;
    use Ada.Command_Line;
-   use Ada.Assertions;
    use Ada.Integer_Text_IO;
-   use Ada.Containers;
    use Ada.Strings.Fixed;
 
    X : Asset_Vectors.Vector;

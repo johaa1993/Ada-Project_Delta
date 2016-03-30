@@ -1,5 +1,14 @@
+with Ada.Text_IO;
+with Ada.Integer_Text_IO;
+with Ada.Float_Text_IO;
+with Ada.Strings.Fixed;
+
 package body CBR.Texts is
 
+   use Ada.Text_IO;
+   use Ada.Integer_Text_IO;
+   use Ada.Float_Text_IO;
+   use Ada.Strings.Fixed;
 
    procedure Put_K_Header is
    begin
@@ -101,8 +110,6 @@ package body CBR.Texts is
    end;
 
    procedure Put_Distance (Item : Asset_Vector) is
-      Fore : Field := 2;
-      Aft : Field := 3;
    begin
       Put_Time_Header;
       Put_Class_Header;
@@ -117,8 +124,6 @@ package body CBR.Texts is
    end;
 
    procedure Put_Prominent (Item : Asset_Vector) is
-      Fore : Field := 2;
-      Aft : Field := 3;
    begin
       Put_Time_Header;
       Put_Class_Header;
@@ -133,8 +138,6 @@ package body CBR.Texts is
    end;
 
    procedure Put_Class (Item : Asset_Vector) is
-      Fore : Field := 2;
-      Aft : Field := 3;
    begin
       Put_Time_Header;
       Put_Class_Header;

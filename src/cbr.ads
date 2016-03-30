@@ -1,30 +1,10 @@
-with Ada.Text_IO;
-with Ada.Command_Line;
-with Ada.Float_Text_IO;
-with Ada.Integer_Text_IO;
-with Ada.Numerics.Real_Arrays;
-with Ada.Containers.Formal_Vectors;
 with Ada.Containers.Vectors;
-with Ada.Containers.Indefinite_Vectors;
-with Ada.Assertions;
-with Ada.Strings.Fixed;
-with Ada.Numerics.Elementary_Functions;
-
 with Dev.Math;
 with Dev.Math.Distances;
 
 package CBR is
 
-   use Ada.Numerics.Elementary_Functions;
-   use Ada.Numerics.Real_Arrays;
-   use Ada.Text_IO;
-   use Ada.Float_Text_IO;
-   use Ada.Command_Line;
-   use Ada.Assertions;
-   use Ada.Integer_Text_IO;
    use Ada.Containers;
-   use Ada.Strings.Fixed;
-
    use Dev.Math;
 
    package Class_Vectors is new Ada.Containers.Vectors (Natural, Natural);
@@ -53,12 +33,6 @@ package CBR is
    subtype Asset_Vector is Asset_Vectors.Vector;
    subtype Prominent_Vector is Prominent_Vectors.Vector;
 
-   procedure Write_Class (Item : Asset_Vector; Name : String);
-   procedure Write_Distance (Item : Asset_Vector; Name : String);
-   procedure Write_Correctness (Item : Natural_Vector; Name : String);
-   procedure Write_Prominent (Item : Prominent_Vector; Name : String);
-   procedure Write_Prominent_CSV (Item : Prominent_Vector; Name : String);
-
    procedure Calc_Distance (Item : in out Asset_Vector; Sample : Asset_Vector; Kind : Distances.Kinds.Kind; W : Float_Vector);
    -- Calculate distance to all assets for each sample.
    -- This is the first step of CBR-KNN.
@@ -76,7 +50,7 @@ package CBR is
    -- Summarize all prominent estimation for all K.
    -- This is used if we have multiple samples.
 
-   procedure Initialize (Item : in out Prominent_Vector; Class_Count : Count_Type; K_Count : Count_Type);
+   procedure Initialize (Item : in out Prominent_Vector; Class_Count : Natural; K_Count : Natural);
 
    procedure Evaluate (Item : in out Prominent_Vector; Sample : Asset_Vector; Correctness : out Natural_Vector);
    -- If sample have known classes then we can evaluate the prominent classes.

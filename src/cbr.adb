@@ -1,104 +1,5 @@
 package body CBR is
 
-   procedure Put_Class (F : File_Type; Item : Integer) is
-   begin
-      Put (F, Item, 4);
-   end;
-
-   procedure Put_Point (F : File_Type; Item : Float_Vector) is
-   begin
-      for E of Item loop
-         Put (F, " ");
-         Put (F, E);
-      end loop;
-   end;
-
-   procedure Put_Correctness (F : File_Type; Item : Natural) is
-   begin
-      Put (F, Item, 4);
-   end;
-
-   procedure Put_Distance_Vector (F : File_Type; Item : Distance_Vector) is
-   begin
-      for E of Item loop
-         Put (F, " ");
-         Put (F, E);
-      end loop;
-   end;
-
-   procedure Put_Prominent (F : File_Type; Item : Prominent) is
-   begin
-      for E of Item.P loop
-         Put (F, " ");
-         Put (F, E, 4);
-      end loop;
-   end;
-
-   procedure Put_Prominent_CSV (F : File_Type; Item : Prominent) is
-   begin
-      for E of Item.P loop
-         Put (F, E, 4);
-         Put (F, ",");
-      end loop;
-   end;
-
-   procedure Write_Class (Item : Asset_Vector; Name : String) is
-      F : File_Type;
-   begin
-      Create (F, Out_File, Name);
-      for E : Asset of Item loop
-         Put_Class (F, E.Class);
-         Put_Point (F, E.Point);
-         New_Line (F);
-      end loop;
-      Close (F);
-   end;
-
-   procedure Write_Distance (Item : Asset_Vector; Name : String) is
-      F : File_Type;
-   begin
-      Create (F, Out_File, Name);
-      for E : Asset of Item loop
-         Put_Class (F, E.Class);
-         Put_Distance_Vector (F, E.Dis);
-         New_Line (F);
-      end loop;
-      Close (F);
-   end;
-
-   procedure Write_Correctness (Item : Natural_Vector; Name : String) is
-      F : File_Type;
-   begin
-      Create (F, Out_File, Name);
-      for E of Item loop
-         Put_Correctness (F, E);
-         New_Line (F);
-      end loop;
-      Close (F);
-   end;
-
-   procedure Write_Prominent (Item : Prominent_Vector; Name : String) is
-      F : File_Type;
-   begin
-      Create (F, Out_File, Name);
-      for E : Prominent of Item loop
-         Put_Prominent (F, E);
-         New_Line (F);
-      end loop;
-      Close (F);
-   end;
-
-   procedure Write_Prominent_CSV (Item : Prominent_Vector; Name : String) is
-      F : File_Type;
-   begin
-      Create (F, Out_File, Name);
-      for E : Prominent of Item loop
-         Put_Prominent_CSV (F, E);
-         New_Line (F);
-      end loop;
-      Close (F);
-   end;
-
    procedure Calc_Distance (Item : in out Asset_Vector; Sample : Asset; Kind : Distances.Kinds.Kind; W : Float_Vector) is
       use Distance_Vectors;
       use Dev.Math.Distances;
@@ -120,7 +21,7 @@ package body CBR is
       S : Class_Vector;
       M : Integer := -1;
       T : Integer := 0;
-      N : Count_Type := 10;
+      N : constant Count_Type := 10;
    begin
       S := To_Vector (0, N);
       for E : Asset of Item loop
@@ -149,13 +50,13 @@ package body CBR is
       end loop;
    end;
 
-   procedure Initialize (Item : in out Prominent_Vector; Class_Count : Count_Type; K_Count : Count_Type) is
+   procedure Initialize (Item : in out Prominent_Vector; Class_Count : Natural; K_Count : Natural) is
       use Prominent_Vectors;
       use Class_Vectors;
       P : Prominent;
    begin
-      P.P := To_Vector (0, Class_Count);
-      Item := To_Vector (P, K_Count);
+      P.P := To_Vector (0, Count_Type (Class_Count));
+      Item := To_Vector (P, Count_Type (K_Count));
    end;
 
    function Max_Class (Item : Asset_Vector) return Natural is
