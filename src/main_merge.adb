@@ -11,12 +11,14 @@ with Ada.Strings.Fixed;
 with CBR;
 with CBR.Texts;
 with CBR.Readings;
+with Dev.Args;
 
 procedure Main_Merge is
 
    use CBR;
    use CBR.Texts;
    use CBR.Readings;
+   use Dev.Args;
    use Ada.Numerics.Real_Arrays;
    use Ada.Text_IO;
    use Ada.Float_Text_IO;
@@ -27,30 +29,32 @@ procedure Main_Merge is
    use Ada.Strings.Fixed;
 
    X : Asset_Vectors.Vector;
-
-   Help_Text_1 : constant String := "<Class_File> <Feature_Files ...>";
-   Help_Text_2 : constant String := "<Class_File> <Feature_Files ...> -o <Out_File>";
+   P : Natural;
 
 begin
 
-   if Argument_Count > 1 then
-      Read_Class (X, Argument (1));
-      for I in 2 .. Argument_Count loop
-         if Argument (I) (1 .. 2) = "-o" then
-            Assert (Argument_Count = I + 1, "Missing Out_File");
-            Write_Class (X, Argument (I + 1));
-            return;
-         else
-            Read_Point (X, Argument (I));
-         end if;
-      end loop;
+
+   P := Find_Argument ("-c");
+   Assert (P > 0, "Missing class file -c flag");
+   Read_Class (X, Get_Argument_Value (P + 1));
+
+   P := Find_Argument ("-f");
+
+   loop
+      exit when P = Argument_Count;
+      P := P + 1;
+      exit when Get_Argument_Value (P)'Length = 0;
+      Read_Point (X, Argument (P));
+   end loop;
+
+
+
+   P := Find_Argument ("-o");
+   if P > 0 then
+      Write_Class (X, Get_Argument_Value (P + 1));
    else
-      Put_Line ("Argument_Count is not larger than 1.");
-      Put_Line ("Usage: " & Help_Text_1);
-      Put_Line ("Usage: " & Help_Text_2);
+      Put_Point (X);
    end if;
 
-
-   Put_Point (X);
 
 end;

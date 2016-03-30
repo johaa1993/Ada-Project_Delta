@@ -11,12 +11,14 @@ with Ada.Strings.Fixed;
 with CBR;
 with CBR.Texts;
 with CBR.Readings;
+with Dev.Args;
 
 procedure Main_Eval is
 
    use CBR;
    use CBR.Texts;
    use CBR.Readings;
+   use Dev.Args;
    use Ada.Numerics.Real_Arrays;
    use Ada.Text_IO;
    use Ada.Float_Text_IO;
@@ -26,19 +28,28 @@ procedure Main_Eval is
    use Ada.Containers;
    use Ada.Strings.Fixed;
 
-   P : Prominent_Vectors.Vector;
+   Y : Prominent_Vectors.Vector;
    S : Asset_Vectors.Vector;
    N : Natural_Vectors.Vector;
-
-   Help_Text_1 : constant String := "<Prominent_File> <Sample_File>";
-   Help_Text_2 : constant String := "<Prominent_File> <Sample_File> <Out_Correctness_File>";
+   P : Natural;
 
 begin
 
-   if Argument_Count = 2 then
-      Read_Prominent (P, Argument (1));
-      Read_Class (S, Argument (2));
-      Evaluate (P, S, N);
+
+   P := Find_Argument ("-p");
+   Assert (P > 0, "Missing Prominent_File -p flag");
+   Read_Prominent (Y, Get_Argument_Value (P + 1));
+
+   P := Find_Argument ("-s");
+   Assert (P > 0, "Missing Sample_File -s flag");
+   Read_Class (S, Get_Argument_Value (P + 1));
+
+   Evaluate (Y, S, N);
+
+   P := Find_Argument ("-o");
+   if P > 0 then
+      Write_Correctness (N, Get_Argument_Value (P + 1));
+   else
       Put (Tail ("K", 3));
       Put (Tail ("Correct", 10));
       New_Line;
@@ -47,15 +58,7 @@ begin
          Put (N (I), 10);
          New_Line;
       end loop;
-   elsif Argument_Count = 3 then
-      Read_Prominent (P, Argument (1));
-      Read_Class (S, Argument (2));
-      Evaluate (P, S, N);
-      Write_Correctness (N, Argument (3));
-   else
-      Put_Line ("Argument_Count must be 2.");
-      Put_Line ("Usage: " & Help_Text_1);
-      Put_Line ("Usage: " & Help_Text_2);
    end if;
+
 
 end;

@@ -1,6 +1,6 @@
 @cls
-@merge.exe class.csv f1.csv f2.csv -o db.csv
-@normalize.exe db.csv db.csv
+@merge.exe -c class.csv -f f1.csv f2.csv -o db.csv
+@normalize.exe -mm db.csv -o db.csv
 
 @echo ==========Informaion==========
 @echo:
@@ -9,15 +9,15 @@
 
 @echo ==========Distance==========
 @echo:
-@distance.exe db.csv s.csv manhattan
-@distance.exe db.csv s.csv manhattan d.csv
+@distance.exe -db db.csv -s s.csv -d manhattan -w 1.0 1.0 1.0
+@distance.exe -db db.csv -s s.csv -d manhattan -w 1.0 1.0 1.0 -o d.csv
 
 @echo ==========K-Sort==========
 @echo:
-@ksort.exe d.csv 4
-@ksort.exe d.csv 4 p.csv
+@ksort.exe -d d.csv -k 4
+@ksort.exe -d d.csv -k 4 -o p.csv
 @echo:
 
 @echo ==========Evaluation==========
 @echo:
-@eval.exe p.csv s.csv
+@eval.exe -p p.csv -s s.csv

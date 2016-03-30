@@ -11,12 +11,14 @@ with Ada.Strings.Fixed;
 with CBR;
 with CBR.Texts;
 with CBR.Readings;
+with Dev.Args;
 
 procedure Main_Ksort is
 
    use CBR;
    use CBR.Texts;
    use CBR.Readings;
+   use Dev.Args;
    use Ada.Numerics.Real_Arrays;
    use Ada.Text_IO;
    use Ada.Float_Text_IO;
@@ -36,29 +38,34 @@ procedure Main_Ksort is
    end;
 
    X : Asset_Vector;
-   P : Prominent_Vector;
+   Y : Prominent_Vector;
+   P : Natural;
 
    Help_Text_1 : constant String := "<Distance_File> <K_Count>";
    Help_Text_2 : constant String := "<Distance_File> <K_Count> <Out_Prominent_File>";
 
 begin
 
-   if Argument_Count = 2 then
-      Read_Distance (X, Argument (1));
-      --Include 0 as unknown class
-      Initialize (P, Count_Type (Max_Class (X) + 1), Count_Type'Value (Argument (2)));
-      Calc (X, P);
-      Put (P);
-   elsif Argument_Count = 3 then
-      Read_Distance (X, Argument (1));
-      Initialize (P, Count_Type (Max_Class (X) + 1), Count_Type'Value (Argument (2)));
-      Calc (X, P);
-      Write_Prominent (P, Argument (3));
+
+
+   P := Find_Argument ("-d");
+   Assert (P > 0, "Missing distance file -d flag");
+   Read_Distance (X, Get_Argument_Value (P + 1));
+
+   P := Find_Argument ("-k");
+   Assert (P > 0, "Missing k count -k flag");
+   Initialize (Y, Count_Type (Max_Class (X) + 1), Count_Type'Value (Get_Argument_Value (P + 1)));
+   Calc (X, Y);
+
+   P := Find_Argument ("-o");
+   if P > 0 then
+      Write_Prominent (Y, Get_Argument_Value (P + 1));
    else
-      Put_Line ("Argument_Count must be 2 or 3.");
-      Put_Line ("Usage: " & Help_Text_1);
-      Put_Line ("Usage: " & Help_Text_2);
+      Put (Y);
    end if;
+
+
+
 
 
 end;

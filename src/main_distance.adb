@@ -54,6 +54,10 @@ begin
    Assert (P > 0, "Missing sample file -s flag");
    Read_Class (Y, Get_Argument_Value (P + 1));
 
+   Assert (Dim_Count_Max (X) = Dim_Count_Min (X), "Different dimension count in database.");
+   Assert (Dim_Count_Max (Y) = Dim_Count_Min (Y), "Different dimension count in sample.");
+   Assert (Dim_Count_Max (X) = Dim_Count_Max (Y), "Different dimension count in database and sample.");
+
    P := Find_Argument ("-d");
    Assert (P > 0, "Missing distance type -d flag");
    D := Distances.Kinds.Value (Argument (P + 1));
@@ -63,16 +67,8 @@ begin
    while Get (P, W0) loop
       W.Append (W0);
    end loop;
-   Put_Line ("Found " & W.Length'Img & " weights.");
 
-   for E : Asset of X loop
-      Assert (E.Point.Length = W.Length, "Number of weights is not equal number of dimension.");
-   end loop;
-
-   for E : Asset of Y loop
-      Assert (E.Point.Length = W.Length, "Number of weights is not equal number of dimension.");
-   end loop;
-
+   Assert (Dim_Count_Max (X) = Natural (W.Length), "Number of weights is not equal number of dimension.");
    Calc_Distance (X, Y, D, W);
 
    P := Find_Argument ("-o");

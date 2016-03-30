@@ -72,7 +72,7 @@ begin
 
 
    P := Find_Argument ("-mm");
-   Assert (P > 0, "Missing database file -db flag");
+   Assert (P > 0, "Missing database file -mm flag");
    Read_Class (X, Get_Argument_Value (P + 1));
    Set_Min_Max (X, Min, Max);
    Find_Min_Max (X, Min, Max);
