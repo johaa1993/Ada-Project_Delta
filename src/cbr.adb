@@ -34,6 +34,14 @@ package body CBR is
       end loop;
    end;
 
+   procedure Put_Prominent_CSV (F : File_Type; Item : Prominent) is
+   begin
+      for E of Item.P loop
+         Put (F, E, 4);
+         Put (F, ",");
+      end loop;
+   end;
+
    procedure Write_Class (Item : Asset_Vector; Name : String) is
       F : File_Type;
    begin
@@ -75,6 +83,17 @@ package body CBR is
       Create (F, Out_File, Name);
       for E : Prominent of Item loop
          Put_Prominent (F, E);
+         New_Line (F);
+      end loop;
+      Close (F);
+   end;
+
+   procedure Write_Prominent_CSV (Item : Prominent_Vector; Name : String) is
+      F : File_Type;
+   begin
+      Create (F, Out_File, Name);
+      for E : Prominent of Item loop
+         Put_Prominent_CSV (F, E);
          New_Line (F);
       end loop;
       Close (F);

@@ -57,6 +57,7 @@ package CBR is
    procedure Write_Distance (Item : Asset_Vector; Name : String);
    procedure Write_Correctness (Item : Natural_Vector; Name : String);
    procedure Write_Prominent (Item : Prominent_Vector; Name : String);
+   procedure Write_Prominent_CSV (Item : Prominent_Vector; Name : String);
 
    procedure Calc_Distance (Item : in out Asset_Vector; Sample : Asset_Vector; Kind : Distances.Kinds.Kind; W : Float_Vector);
    -- Calculate distance to all assets for each sample.

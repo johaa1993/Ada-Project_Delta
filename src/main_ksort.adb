@@ -60,11 +60,17 @@ begin
    P := Find_Argument ("-o");
    if P > 0 then
       Write_Prominent (Y, Get_Argument_Value (P + 1));
-   else
-      Put (Y);
    end if;
 
+   P := Find_Argument ("-csv");
+   if P > 0 then
+      Write_Prominent_CSV (Y, Get_Argument_Value (P + 1));
+   end if;
 
+   P := Find_Argument ("-put");
+   if P > 0 then
+      Put (Y);
+   end if;
 
 
 

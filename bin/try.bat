@@ -16,4 +16,4 @@
 
 @echo ==========K-Sort==========
 @echo:
-@ksort.exe -d d.csv -k 4
+@ksort.exe -d d.csv -k 4 -csv p.csv
