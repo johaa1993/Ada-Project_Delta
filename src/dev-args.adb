@@ -1,19 +1,9 @@
 with Ada.Command_Line;
-with Ada.Text_IO;
-with Ada.Float_Text_IO;
-with Ada.Integer_Text_IO;
-with Ada.Strings.Maps;
-with Ada.Assertions;
 
 package body Dev.Args is
 
-   use Ada.Assertions;
-   use Ada.Command_Line;
-   use Ada.Text_IO;
-   use Ada.Float_Text_IO;
-   use Ada.Integer_Text_IO;
-
    function Find_Argument (F : String) return Natural is
+      use Ada.Command_Line;
       P : Natural := 0;
    begin
       loop
@@ -29,6 +19,7 @@ package body Dev.Args is
 
 
    function Get (P : in out Positive; To : out Float) return Boolean is
+      use Ada.Command_Line;
    begin
       To := Float'Value (Argument (P));
       P := P + 1;
@@ -39,6 +30,7 @@ package body Dev.Args is
 
 
    function Get_Argument_Value (P : Positive) return String is
+      use Ada.Command_Line;
    begin
       if Argument (P) (1) = '-' then
          return "";

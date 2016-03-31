@@ -3,29 +3,24 @@ with Ada.Assertions;
 with CBR;
 with CBR.Texts;
 with CBR.Readings;
-with CBR.Writings;
 with Dev.Math;
 with Dev.Args;
 with Dev.Math.Distances;
-with Ada.Containers;
 
 procedure Main_KNN is
 
-   use Dev.Math;
    use Dev.Args;
    use CBR;
    use CBR.Texts;
    use CBR.Readings;
-   use CBR.Writings;
    use Ada.Text_IO;
    use Ada.Assertions;
-   use Ada.Containers;
 
    X : Asset_Vector;
    S : Asset_Vector;
    D : Distance_Info_Vector;
    J : Natural;
-   DT : Distances.Kinds.Kind;
+   DT : Dev.Math.Distances.Kinds.Kind;
    W : Float_Vector;
    W0 : Float;
    K : K_Class_Vector;
@@ -34,8 +29,7 @@ procedure Main_KNN is
 
 begin
 
-   Put_Line ("K nearest neighbor (KNN)");
-   New_Line;
+   Put_Line ("==========K nearest neighbor (KNN)==========");
 
    J := Find_Argument ("-db");
    Assert (J > 0, "Missing class file -c flag");
@@ -43,7 +37,7 @@ begin
 
    J := Find_Argument ("-d");
    Assert (J > 0, "Missing distance type -d flag");
-   DT := Distances.Kinds.Value (Get_Argument_Value (J + 1));
+   DT := Dev.Math.Distances.Kinds.Value (Get_Argument_Value (J + 1));
 
    J := Find_Argument ("-s");
    Assert (J > 0, "Missing sample file -s flag");

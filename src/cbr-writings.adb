@@ -24,14 +24,6 @@ package body CBR.Writings is
       Put (F, Item, 4);
    end;
 
-   procedure Put_Distance_Vector (F : File_Type; Item : Distance_Vector) is
-   begin
-      for E of Item loop
-         Put (F, " ");
-         Put (F, E);
-      end loop;
-   end;
-
    procedure Put_Prominent (F : File_Type; Item : Prominent) is
    begin
       for E of Item.P loop
@@ -60,28 +52,6 @@ package body CBR.Writings is
       Close (F);
    end;
 
-   procedure Write_Distance (Item : Asset_Vector; Name : String) is
-      F : File_Type;
-   begin
-      Create (F, Out_File, Name);
-      for E : Asset of Item loop
-         Put_Class (F, E.Class);
-         Put_Distance_Vector (F, E.Dis);
-         New_Line (F);
-      end loop;
-      Close (F);
-   end;
-
-   procedure Write_Correctness (Item : Natural_Vector; Name : String) is
-      F : File_Type;
-   begin
-      Create (F, Out_File, Name);
-      for E of Item loop
-         Put_Correctness (F, E);
-         New_Line (F);
-      end loop;
-      Close (F);
-   end;
 
    procedure Write_Prominent (Item : Prominent_Vector; Name : String) is
       F : File_Type;

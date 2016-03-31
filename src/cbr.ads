@@ -4,23 +4,18 @@ with Dev.Math.Distances;
 
 package CBR is
 
-   use Ada.Containers;
-   use Dev.Math;
-
    package Class_Vectors is new Ada.Containers.Vectors (Natural, Natural);
-   package Natural_Vectors is new Ada.Containers.Vectors (Positive, Natural);
-   package Distance_Vectors is new Ada.Containers.Vectors (Natural, Distance);
+
+   package Class_Counter_Vectors is new Ada.Containers.Vectors (Positive, Natural);
+   subtype Class_Counter_Vector is Class_Counter_Vectors.Vector;
 
    subtype Class_Vector is Class_Vectors.Vector;
-   subtype Natural_Vector is Natural_Vectors.Vector;
-   subtype Distance_Vector is Distance_Vectors.Vector;
+   subtype Float_Vector is Dev.Math.Float_Vector;
 
    type Asset is record
       Time : Natural := 0;
       Class : Natural := 0;
-      Prominent : Integer := 0;
       Point : Float_Vector;
-      Dis : Distance_Vector;
    end record;
 
    type Prominent is record
@@ -43,26 +38,10 @@ package CBR is
    subtype Prominent_Vector is Prominent_Vectors.Vector;
    subtype Distance_Info_Vector is Distance_Info_Vectors.Vector;
 
-   procedure Calc_Distance (Item : in out Asset_Vector; Sample : Asset_Vector; Kind : Distances.Kinds.Kind; W : Float_Vector);
-   -- Calculate distance to all assets for each sample.
-   -- This is the first step of CBR-KNN.
-
-   procedure Sort_Distance (Item : in out Asset_Vector; Index : Natural);
-   -- Sort by distance index.
-   -- Index represents the sample to be sorted.
-   -- This is the second step of CBR-KNN.
-
-   procedure Calc_Prominent (Item : in out Asset_Vector);
-   -- Calculate the most prominent classes.
-   -- This is the last step of CBR-KNN.
-
-   procedure Summarize (Summation : in out Prominent_Vector; Estimations : Asset_Vector) with Pre => Summation.First_Index = Estimations.First_Index;
-   -- Summarize all prominent estimation for all K.
-   -- This is used if we have multiple samples.
 
    procedure Initialize (Item : in out Prominent_Vector; Class_Count : Natural; K_Count : Natural);
 
-   procedure Evaluate (Item : in out Prominent_Vector; Sample : Asset_Vector; Correctness : out Natural_Vector);
+   --procedure Evaluate (Item : in out Prominent_Vector; Sample : Asset_Vector; Correctness : out Natural_Vector);
    -- If sample have known classes then we can evaluate the prominent classes.
    -- This is used if we have multiple samples.
 
@@ -70,11 +49,11 @@ package CBR is
    function Dim_Count_Max (Item : Asset_Vector) return Natural;
    function Max_Class (Item : Asset_Vector) return Natural;
    function Unique_Class_Count (Item : Asset_Vector) return Natural;
+   procedure Find_Min_Max (X : Asset_Vector; Min : in out Float_Vector; Max : in out Float_Vector);
+   procedure Normalize (X : in out Asset_Vector; Min : in out Float_Vector; Max : in out Float_Vector);
+   procedure Initialize_Min_Max (X : Asset_Vector; Min : in out Float_Vector; Max : in out Float_Vector);
 
-
-
-
-   procedure Calc_Distance (DB : Asset_Vector; Sample : Asset; Kind : Distances.Kinds.Kind; W : Float_Vector; D : in out Distance_Info_Vector);
+   procedure Calc_Distance (DB : Asset_Vector; Sample : Asset; Kind : Dev.Math.Distances.Kinds.Kind; W : Float_Vector; D : in out Distance_Info_Vector);
    procedure Calc_Prominent (D : Distance_Info_Vector; To : in out K_Class_Vector);
    procedure Sort (Container : in out Distance_Info_Vector);
    procedure Summarize1 (Estimations : K_Class_Vector; To : in out Prominent_Vector);

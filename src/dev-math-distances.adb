@@ -3,8 +3,6 @@ with Ada.Numerics.Elementary_Functions;
 
 package body Dev.Math.Distances is
 
-   use Ada.Assertions;
-
    package body Kinds is
       function Value (Name : String) return Kind is
          use Ada.Assertions;
@@ -68,6 +66,7 @@ package body Dev.Math.Distances is
 
 
    function Selective (A : Float_Vector; B : Float_Vector; W : Float_Vector; Kind : Kinds.Kind) return Distance is
+      use Ada.Assertions;
    begin
       case Kind is
          when Kinds.Manhattan =>

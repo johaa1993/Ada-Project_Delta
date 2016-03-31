@@ -15,11 +15,6 @@ package body CBR.Texts is
       Put (Tail ("K", 3));
    end;
 
-   procedure Put_Prominent_Header is
-   begin
-      Put (Tail ("Prominent", 10));
-   end;
-
    procedure Put_Prominent_Class_Wise_Header is
    begin
       Put ("  ");
@@ -41,21 +36,6 @@ package body CBR.Texts is
       Put (Tail ("Point", 8));
    end;
 
-   procedure Put_Distance_Header is
-   begin
-      Put (Tail ("Distance", 8));
-   end;
-
-   procedure Put_Class (Item : Asset) is
-   begin
-      Put (Item.Class, 4);
-   end;
-
-   procedure Put_Time (Item : Asset) is
-   begin
-      Put (Item.Time, 4);
-   end;
-
    procedure Put_Prominent (Item : Prominent) is
    begin
       for E of Item.P loop
@@ -67,14 +47,6 @@ package body CBR.Texts is
    procedure Put_Point (Item : Asset) is
    begin
       for E of Item.Point loop
-         Put (",");
-         Put (E);
-      end loop;
-   end;
-
-   procedure Put_Distance_Vector (Item : Asset) is
-   begin
-      for E of Item.Dis loop
          Put (",");
          Put (E);
       end loop;
@@ -104,38 +76,10 @@ package body CBR.Texts is
          Put (E.Time, 6);
          Put (E.Class, 6);
          Put_Point (E);
-         Put_Distance_Vector (E);
          New_Line;
       end loop;
    end;
 
-   procedure Put_Distance (Item : Asset_Vector) is
-   begin
-      Put_Time_Header;
-      Put_Class_Header;
-      Put_Distance_Header;
-      New_Line;
-      for E : Asset of Item loop
-         Put_Time (E);
-         Put_Class (E);
-         Put_Distance_Vector (E);
-         New_Line;
-      end loop;
-   end;
-
-   procedure Put_Prominent (Item : Asset_Vector) is
-   begin
-      Put_Time_Header;
-      Put_Class_Header;
-      Put_Prominent_Header;
-      New_Line;
-      for E : Asset of Item loop
-         Put (E.Time, 6);
-         Put (E.Class, 6);
-         Put (E.Prominent, 10);
-         New_Line;
-      end loop;
-   end;
 
    procedure Put_Class (Item : Asset_Vector) is
    begin

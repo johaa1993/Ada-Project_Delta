@@ -1,5 +1,3 @@
-with Ada.Containers.Vectors;
-
 package Dev.Math.Distances is
 
    package Kinds is

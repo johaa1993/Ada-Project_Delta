@@ -1,6 +1,4 @@
 with Ada.Assertions;
-with Ada.Text_IO;
-with Ada.Float_Text_IO;
 
 package body Dev.Math is
 
