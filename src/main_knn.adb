@@ -43,6 +43,7 @@ procedure Main_KNN is
 begin
 
    Put_Line ("==========K nearest neighbor (KNN)==========");
+   New_Line;
 
    J := Find_Argument_Asserted ("-db", "Missing database -db flag");
    Read_Class (X, Get_Argument_Value (J + 1));
@@ -93,8 +94,8 @@ begin
    if J > 0 then
       Read (C, Get_Argument_Value (J + 1));
       for E of C loop
-         Put (" ");
          Put (Tail (E, 16));
+         Put (",");
       end loop;
       New_Line;
    end if;

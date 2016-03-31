@@ -47,11 +47,15 @@ package body CBR.Texts is
    end;
 
    procedure Put_Prominent (Item : Prominent) is
+      use Ada.Containers;
    begin
-      for E of Item.P loop
-         Put (",");
-         Put (E, 16);
-      end loop;
+      if Item.P.Length > 0 then
+         Put (Item.P (Item.P.First_Index), 16);
+         for I in Item.P.First_Index + 1 .. Item.P.Last_Index loop
+            Put (",");
+            Put (Item.P (I), 16);
+         end loop;
+      end if;
    end;
 
    procedure Put_Point (Item : Asset) is
@@ -78,7 +82,7 @@ package body CBR.Texts is
 
    procedure Put_CSV (Item : Prominent_Vector) is
    begin
-      for I in Item.First_Index .. Item.Last_Index loop
+      for I in Item.First_Index.. Item.Last_Index loop
          --Put (I, 3);
          Put_Prominent (Item (I));
          New_Line;
