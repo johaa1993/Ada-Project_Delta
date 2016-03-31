@@ -1,4 +1,5 @@
 with Ada.Containers.Vectors;
+with Ada.Strings.Unbounded;
 with Dev.Math;
 with Dev.Math.Distances;
 
@@ -9,9 +10,11 @@ package CBR is
 
    package Class_Counter_Vectors is new Ada.Containers.Vectors (Class, Natural);
    package K_Class_Vectors is new Ada.Containers.Vectors (Positive, Class);
+   package Name_Vectors is new Ada.Containers.Vectors (Positive, Ada.Strings.Unbounded.Unbounded_String, Ada.Strings.Unbounded."=");
 
    subtype Class_Counter_Vector is Class_Counter_Vectors.Vector;
    subtype K_Class_Vector is K_Class_Vectors.Vector;
+
    subtype Point is Dev.Math.Float_Vector;
    subtype Weight_Vector is Dev.Math.Float_Vector;
 

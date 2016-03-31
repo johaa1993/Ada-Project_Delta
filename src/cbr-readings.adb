@@ -95,9 +95,6 @@ package body CBR.Readings is
       Close (F);
    end;
 
-
-
-
    procedure Read_Class (Item : out Asset_Vector; Name : String) is
       function Get (F : File_Type) return Asset with Inline_Always;
       function Get (F : File_Type) return Asset is

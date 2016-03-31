@@ -90,7 +90,6 @@ package body CBR.Texts is
       end loop;
    end;
 
-
    procedure Put_Class (Item : Asset_Vector) is
    begin
       Put_Time_Header;
@@ -102,9 +101,6 @@ package body CBR.Texts is
          New_Line;
       end loop;
    end;
-
-
-
 
    procedure Put (Item : Distance_Info) is
    begin
