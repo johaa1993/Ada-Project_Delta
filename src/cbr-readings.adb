@@ -1,12 +1,15 @@
 with Ada.Text_IO;
 with Ada.Integer_Text_IO;
 with Ada.Float_Text_IO;
+with Ada.Strings.Unbounded.Text_IO;
 
 package body CBR.Readings is
 
    use Ada.Text_IO;
    use Ada.Integer_Text_IO;
    use Ada.Float_Text_IO;
+
+
 
    procedure Skip_Space (F : File_Type) is
       EOL : Boolean;
@@ -131,5 +134,24 @@ package body CBR.Readings is
       end loop;
       Close (F);
    end;
+
+
+
+   procedure Read (Item : in out Name_Vector; Name : String) is
+      use Ada.Strings.Unbounded.Text_IO;
+      use Ada.Strings.Unbounded;
+      F : File_Type;
+      U : Unbounded_String;
+   begin
+      Open (F, In_File, Name);
+      loop
+         exit when End_Of_File (F);
+         U := Get_Line (F);
+         Item.Append (U);
+      end loop;
+      Close (F);
+   end;
+
+
 
 end;

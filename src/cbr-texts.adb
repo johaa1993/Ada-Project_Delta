@@ -50,7 +50,7 @@ package body CBR.Texts is
    begin
       for E of Item.P loop
          Put (",");
-         Put (E, 4);
+         Put (E, 16);
       end loop;
    end;
 
@@ -78,12 +78,8 @@ package body CBR.Texts is
 
    procedure Put_CSV (Item : Prominent_Vector) is
    begin
-      Put_K_Header;
-      Put ("|");
-      Put_Prominent_Class_Wise_Header;
-      New_Line;
       for I in Item.First_Index .. Item.Last_Index loop
-         Put (I, 3);
+         --Put (I, 3);
          Put_Prominent (Item (I));
          New_Line;
       end loop;
