@@ -61,7 +61,7 @@ begin
       Summarize1 (K, P);
    end loop;
 
-   Put (P);
+   Put_CSV (P);
 
 
    null;

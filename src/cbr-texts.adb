@@ -76,6 +76,19 @@ package body CBR.Texts is
       end loop;
    end;
 
+   procedure Put_CSV (Item : Prominent_Vector) is
+   begin
+      Put_K_Header;
+      Put ("|");
+      Put_Prominent_Class_Wise_Header;
+      New_Line;
+      for I in Item.First_Index .. Item.Last_Index loop
+         Put (I, 3);
+         Put_Prominent (Item (I));
+         New_Line;
+      end loop;
+   end;
+
    procedure Put_Point (Item : Asset_Vector) is
    begin
       Put_Time_Header;
