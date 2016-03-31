@@ -19,11 +19,6 @@ package body CBR.Writings is
       end loop;
    end;
 
-   procedure Put_Correctness (F : File_Type; Item : Natural) is
-   begin
-      Put (F, Item, 4);
-   end;
-
    procedure Put_Prominent (F : File_Type; Item : Prominent) is
    begin
       for E of Item.P loop

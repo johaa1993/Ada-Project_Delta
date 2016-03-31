@@ -6,7 +6,6 @@ package CBR.Writings is
 
    procedure Put_Class (F : File_Type; Item : Integer);
    procedure Put_Point (F : File_Type; Item : Float_Vector);
-   procedure Put_Correctness (F : File_Type; Item : Natural);
    procedure Put_Prominent (F : File_Type; Item : Prominent);
    procedure Put_Prominent_CSV (F : File_Type; Item : Prominent);
 

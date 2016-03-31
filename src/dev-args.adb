@@ -1,8 +1,9 @@
 with Ada.Command_Line;
+with Ada.Assertions;
 
 package body Dev.Args is
 
-   function Find_Argument (F : String) return Natural is
+   function Find_Argument (Switch : String) return Natural is
       use Ada.Command_Line;
       P : Natural := 0;
    begin
@@ -11,12 +12,20 @@ package body Dev.Args is
             return 0;
          end if;
          P := P + 1;
-         if Argument (P)'Length = F'Length and then Argument (P) (1 .. F'Length) = F then
+         if Argument (P)'Length = Switch'Length and then Argument (P) (1 .. Switch'Length) = Switch then
             return P;
          end if;
       end loop;
    end;
 
+   function Find_Argument_Asserted (Switch : String; Assert_Message : String) return Natural is
+      use Ada.Assertions;
+      P : Natural;
+   begin
+      P := Find_Argument (Switch);
+      Assert (P > 0, Assert_Message);
+      return P;
+   end;
 
    function Get (P : in out Positive; To : out Float) return Boolean is
       use Ada.Command_Line;

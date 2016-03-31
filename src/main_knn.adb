@@ -31,28 +31,23 @@ begin
 
    Put_Line ("==========K nearest neighbor (KNN)==========");
 
-   J := Find_Argument ("-db");
-   Assert (J > 0, "Missing class file -c flag");
+   J := Find_Argument_Asserted ("-db", "Missing database -db flag");
    Read_Class (X, Get_Argument_Value (J + 1));
 
-   J := Find_Argument ("-d");
-   Assert (J > 0, "Missing distance type -d flag");
+   J := Find_Argument_Asserted ("-d", "Missing distance type -d flag");
    DT := Dev.Math.Distances.Kinds.Value (Get_Argument_Value (J + 1));
 
-   J := Find_Argument ("-s");
-   Assert (J > 0, "Missing sample file -s flag");
+   J := Find_Argument_Asserted ("-s", "Missing sample file -s flag");
    Read_Class (S, Get_Argument_Value (J + 1));
 
-   J := Find_Argument ("-w") + 1;
-   Assert (J > 0, "Missing weight -w flag");
+   J := Find_Argument_Asserted ("-w", "Missing weight -w flag") + 1;
    while Get (J, W0) loop
       W.Append (W0);
    end loop;
 
    Assert (Dim_Count_Min (X) = Natural (W.Length), "Number of weights is not equal number of dimension.");
 
-   J := Find_Argument ("-k");
-   Assert (J > 0, "Missing k count -k flag");
+   J := Find_Argument_Asserted ("-k", "Missing k count -k flag");
    KN := Natural'Value (Get_Argument_Value (J + 1));
 
    Initialize (P, Max_Class (X) + 1, KN);

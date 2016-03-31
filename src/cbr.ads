@@ -4,12 +4,10 @@ with Dev.Math.Distances;
 
 package CBR is
 
-   package Class_Vectors is new Ada.Containers.Vectors (Natural, Natural);
+   type Class1 is new Natural;
 
-   package Class_Counter_Vectors is new Ada.Containers.Vectors (Positive, Natural);
+   package Class_Counter_Vectors is new Ada.Containers.Vectors (Natural, Natural);
    subtype Class_Counter_Vector is Class_Counter_Vectors.Vector;
-
-   subtype Class_Vector is Class_Vectors.Vector;
    subtype Float_Vector is Dev.Math.Float_Vector;
 
    type Asset is record
@@ -19,7 +17,7 @@ package CBR is
    end record;
 
    type Prominent is record
-      P : Class_Vector;
+      P : Class_Counter_Vector;
    end record;
 
    type Distance_Info is record

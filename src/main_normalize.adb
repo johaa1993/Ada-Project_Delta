@@ -1,5 +1,4 @@
 with Ada.Text_IO;
-with Ada.Assertions;
 with CBR;
 with CBR.Texts;
 with CBR.Readings;
@@ -14,7 +13,6 @@ procedure Main_Normalize is
    use CBR.Readings;
    use CBR.Writings;
    use Ada.Text_IO;
-   use Ada.Assertions;
 
    X : Asset_Vector;
    Min : Float_Vector;
@@ -30,8 +28,7 @@ begin
       return;
    end if;
 
-   P := Find_Argument ("-mm");
-   Assert (P > 0, "Missing database file -mm flag");
+   P := Find_Argument_Asserted ("-mm", "Missing database file -mm flag");
    Read_Class (X, Get_Argument_Value (P + 1));
    Initialize_Min_Max (X, Min, Max);
    Find_Min_Max (X, Min, Max);

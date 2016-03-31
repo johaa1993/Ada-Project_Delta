@@ -7,7 +7,7 @@ package body Dev.Math is
    function Normalize (Value : Float; Min, Max : Float) return Float is
       use Ada.Assertions;
    begin
-      Assert (Min - Max /= 0.0, "Normalize Min - Max = 0.0");
+      Assert (Min - Max /= 0.0, "Normalization ((Value - Min) / (Max - Min)) yields infinity when Min - Max = 0.0.");
       return (Value - Min) / (Max - Min);
    end;
 

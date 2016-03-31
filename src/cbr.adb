@@ -24,7 +24,7 @@ package body CBR is
 
    procedure Initialize (Item : in out Prominent_Vector; Class_Count : Natural; K_Count : Natural) is
       use Prominent_Vectors;
-      use Class_Vectors;
+      use Class_Counter_Vectors;
       use Ada.Containers;
       P : Prominent;
    begin
@@ -126,8 +126,8 @@ package body CBR is
 
    procedure Calc_Prominent (D : Distance_Info_Vector; To : in out K_Class_Vector) is
       use Ada.Containers;
-      use Class_Vectors;
-      S : Class_Vector;
+      use Class_Counter_Vectors;
+      S : Class_Counter_Vector;
       M : Integer := -1;
       T : Natural := 0;
       N : constant Count_Type := 10;
@@ -154,22 +154,20 @@ package body CBR is
       Distance_Info_Vectors_Sorting.Sort (Container);
    end;
 
+   procedure Increment (Item : in out Natural) is
+   begin
+      Item := Natural'Succ (Item);
+   end;
+
+   procedure Increment (Item : in out Class_Counter_Vector; Class_Increment : Natural) is
+   begin
+      Increment (Item (Class_Increment));
+   end;
+
    procedure Summarize1 (Estimations : K_Class_Vector; To : in out Prominent_Vector) is
-      procedure Add (C : in out Natural) is
-      begin
-         C := C + 1;
-      end;
-      procedure Add (P : in out Class_Vector; C : Natural) is
-      begin
-         Add (P (C));
-      end;
-      procedure Add (P : in out Prominent; C : Natural) is
-      begin
-         Add (P.P, C);
-      end;
    begin
       for I in To.First_Index .. Natural'Min (To.Last_Index, Estimations.Last_Index) loop
-         Add (To (I), Estimations (I));
+         Increment (To (I).P, Estimations (I));
       end loop;
    end;
 

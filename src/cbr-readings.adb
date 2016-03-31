@@ -53,7 +53,7 @@ package body CBR.Readings is
    end;
 
    procedure Get_Class_Vector_Append (F : File_Type; Item : out Prominent) is
-      use Class_Vectors;
+      use Class_Counter_Vectors;
       X : Natural;
    begin
       while not End_Of_Line (F) loop
