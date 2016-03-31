@@ -27,11 +27,21 @@ package CBR is
       P : Class_Vector;
    end record;
 
+   type Distance_Info is record
+      Time : Natural := 0;
+      Class : Natural := 0;
+      Dis : Float;
+   end record;
+
+   package K_Class_Vectors is new Ada.Containers.Vectors (Positive, Natural);
+   package Distance_Info_Vectors is new Ada.Containers.Vectors (Positive, Distance_Info);
    package Prominent_Vectors is new Ada.Containers.Vectors (Positive, Prominent);
    package Asset_Vectors is new Ada.Containers.Vectors (Positive, Asset);
 
+   subtype K_Class_Vector is K_Class_Vectors.Vector;
    subtype Asset_Vector is Asset_Vectors.Vector;
    subtype Prominent_Vector is Prominent_Vectors.Vector;
+   subtype Distance_Info_Vector is Distance_Info_Vectors.Vector;
 
    procedure Calc_Distance (Item : in out Asset_Vector; Sample : Asset_Vector; Kind : Distances.Kinds.Kind; W : Float_Vector);
    -- Calculate distance to all assets for each sample.
@@ -60,5 +70,15 @@ package CBR is
    function Dim_Count_Max (Item : Asset_Vector) return Natural;
    function Max_Class (Item : Asset_Vector) return Natural;
    function Unique_Class_Count (Item : Asset_Vector) return Natural;
+
+
+
+
+   procedure Calc_Distance (DB : Asset_Vector; Sample : Asset; Kind : Distances.Kinds.Kind; W : Float_Vector; D : in out Distance_Info_Vector);
+   procedure Calc_Prominent (D : Distance_Info_Vector; To : in out K_Class_Vector);
+   procedure Sort (Container : in out Distance_Info_Vector);
+   procedure Summarize1 (Estimations : K_Class_Vector; To : in out Prominent_Vector);
+
+
 
 end;

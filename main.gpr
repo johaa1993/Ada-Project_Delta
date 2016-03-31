@@ -2,8 +2,9 @@ project Main is
 
    for Languages use ("ada");
    for Source_Dirs use ("src");
-   for Main use ("main_info.adb", "main_merge.adb", "main_normalize.adb", "main_distance.adb", "main_ksort.adb", "main_eval.adb");
+   --for Main use ("main_info.adb", "main_merge.adb", "main_normalize.adb", "main_distance.adb", "main_ksort.adb", "main_eval.adb");
    --for Main use ("main_test.adb");
+   for Main use ("main_knn.adb");
    for Object_Dir use "obj";
    for Exec_Dir use "bin";
 
@@ -27,6 +28,7 @@ project Main is
       for Executable ("main_ksort.adb") use "ksort";
       for Executable ("main_eval.adb") use "eval";
       for Executable ("main_test.adb") use "test";
+      for Executable ("main_knn.adb") use "knn";
    end Builder;
 
    -- "-gnatwa"
@@ -40,7 +42,7 @@ project Main is
 
    package Compiler is
       for Default_Switches ("ada") use ("-gnata", "-gnatwa", "-gnatf");
-      --for Default_Switches ("ada") use ("-gnata", "-gnatf");
+      for Default_Switches ("ada") use ("-gnata", "-gnatf");
    end Compiler;
 
 end Main;

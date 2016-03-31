@@ -149,4 +149,27 @@ package body CBR.Texts is
       end loop;
    end;
 
+
+   procedure Put (Item : Distance_Info) is
+   begin
+      Put (Item.Class, 3);
+      Put (Item.Dis);
+   end;
+
+   procedure Put (Item : Distance_Info_Vector) is
+   begin
+      for E of Item loop
+         Put (E);
+         New_Line;
+      end loop;
+   end;
+
+   procedure Put (Item : K_Class_Vector) is
+   begin
+      for E of Item loop
+         Put (E);
+         New_Line;
+      end loop;
+   end;
+
 end;

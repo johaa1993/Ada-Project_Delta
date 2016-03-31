@@ -67,7 +67,7 @@ package body Dev.Math.Distances is
    end;
 
 
-   function Distance_Select (A : Float_Vector; B : Float_Vector; W : Float_Vector; Kind : Kinds.Kind) return Distance is
+   function Selective (A : Float_Vector; B : Float_Vector; W : Float_Vector; Kind : Kinds.Kind) return Distance is
    begin
       case Kind is
          when Kinds.Manhattan =>

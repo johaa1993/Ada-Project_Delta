@@ -13,6 +13,6 @@ package Dev.Math.Distances is
    function Canberra (A : Float_Vector; B : Float_Vector; W : Float_Vector) return Distance with Pre => Equal_Index (A, B, W);
    function Euclidean (A : Float_Vector; B : Float_Vector; W : Float_Vector) return Distance with Pre => Equal_Index (A, B, W);
    function Euclidean2 (A : Float_Vector; B : Float_Vector; W : Float_Vector) return Distance with Pre => Equal_Index (A, B, W);
-   function Distance_Select (A : Float_Vector; B : Float_Vector; W : Float_Vector; Kind : Kinds.Kind) return Distance with Pre => Equal_Index (A, B, W);
+   function Selective (A : Float_Vector; B : Float_Vector; W : Float_Vector; Kind : Kinds.Kind) return Distance with Pre => Equal_Index (A, B, W);
 
 end;

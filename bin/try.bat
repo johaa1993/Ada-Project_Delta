@@ -18,8 +18,11 @@
 ::@echo:
 
 
-@distance.exe -db dbn.csv -s sn.csv -d canberra -w 1.0 1.0 1.0 1.0 1.0 1.0 1.0 0.0 -o d.csv
-@ksort.exe -d d.csv -k 10 -put
+::@distance.exe -db dbn.csv -s sn.csv -d canberra -w 1.0 1.0 1.0 1.0 1.0 1.0 1.0 0.0 -o d.csv
+::@ksort.exe -d d.csv -k 10 -put
 
 @distance.exe -db dbn.csv -s sn.csv -d canberra -w 1.0 1.0 1.0 1.0 0.0 1.0 1.0 0.0 -o d.csv
 @ksort.exe -d d.csv -k 10 -put
+
+
+@knn.exe -db dbn.csv -s sn.csv -k 10 -d canberra -w 1.0 1.0 1.0 1.0 0.0 1.0 1.0 0.0

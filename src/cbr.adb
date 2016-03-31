@@ -2,10 +2,10 @@ package body CBR is
 
    procedure Calc_Distance (Item : in out Asset_Vector; Sample : Asset; Kind : Distances.Kinds.Kind; W : Float_Vector) is
       use Distance_Vectors;
-      use Dev.Math.Distances;
+      use Dev.Math;
    begin
       for E : Asset of Item loop
-         Append (E.Dis, Distance_Select (E.Point, Sample.Point, W, Kind));
+         Append (E.Dis, Distances.Selective (E.Point, Sample.Point, W, Kind));
       end loop;
    end;
 
@@ -121,5 +121,91 @@ package body CBR is
       end loop;
       return R;
    end;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   procedure Calc_Distance (DB : Asset_Vector; Sample : Asset; Kind : Distances.Kinds.Kind; W : Float_Vector; D : in out Distance_Info_Vector) is
+      use Dev.Math;
+      X : Distance_Info;
+   begin
+      for E : Asset of DB loop
+         X.Time := E.Time;
+         X.Class := E.Class;
+         X.Dis := Distances.Selective (E.Point, Sample.Point, W, Kind);
+         D.Append (X);
+      end loop;
+   end;
+
+   procedure Calc_Prominent (D : Distance_Info_Vector; To : in out K_Class_Vector) is
+      use Class_Vectors;
+      S : Class_Vector;
+      M : Integer := -1;
+      T : Natural := 0;
+      N : constant Count_Type := 10;
+   begin
+      S := To_Vector (0, N);
+      for E : Distance_Info of D loop
+         S (E.Class) := S (E.Class) + 1;
+         if M = S (E.Class) then
+            T := 0;
+         elsif M < S (E.Class) then
+            M := S (E.Class);
+            T := E.Class;
+         end if;
+         To.Append (T);
+      end loop;
+   end;
+
+
+   function "<" (A, B : Distance_Info) return Boolean is (A.Dis < B.Dis);
+   package Distance_Info_Vectors_Sorting is new Distance_Info_Vectors.Generic_Sorting ("<");
+
+   procedure Sort (Container : in out Distance_Info_Vector) is
+   begin
+      Distance_Info_Vectors_Sorting.Sort (Container);
+   end;
+
+   procedure Summarize1 (Estimations : K_Class_Vector; To : in out Prominent_Vector) is
+      procedure Add (C : in out Natural) is
+      begin
+         C := C + 1;
+      end;
+      procedure Add (P : in out Class_Vector; C : Natural) is
+      begin
+         Add (P (C));
+      end;
+      procedure Add (P : in out Prominent; C : Natural) is
+      begin
+         Add (P.P, C);
+      end;
+   begin
+      for I in To.First_Index .. Natural'Min (To.Last_Index, Estimations.Last_Index) loop
+         Add (To (I), Estimations (I));
+      end loop;
+   end;
+
+--     procedure Summarize (Item : K_Class_Vector; To : in out Prominent_Vector) is
+--     begin
+--        for I in To.First_Index .. Natural'Min (Item.Last_Index, To.Last_Index) loop
+--           To (I).P (Item (I)) := To (I).P (Item (I)) + 1;
+--        end loop;
+--     end;
+
+
+
 
 end;

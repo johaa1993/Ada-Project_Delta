@@ -7,4 +7,8 @@ package CBR.Texts is
 
    procedure Put (Item : Prominent_Vector);
 
+   procedure Put (Item : Distance_Info_Vector);
+
+   procedure Put (Item : K_Class_Vector);
+
 end;
