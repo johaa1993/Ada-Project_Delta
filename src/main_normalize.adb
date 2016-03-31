@@ -15,8 +15,8 @@ procedure Main_Normalize is
    use Ada.Text_IO;
 
    X : Asset_Vector;
-   Min : Float_Vector;
-   Max : Float_Vector;
+   Min : Point;
+   Max : Point;
    P : Natural;
 
 begin

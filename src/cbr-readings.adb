@@ -23,7 +23,7 @@ package body CBR.Readings is
 
    procedure Get_Time (F : File_Type; Item : out Asset) is
    begin
-      Item.Time := Natural (Line (F));
+      Item.T := Time (Line (F));
    exception
       when others => raise Program_Error with "Get_Time. at line " & Line (F)'Img & ".";
    end;
@@ -38,7 +38,7 @@ package body CBR.Readings is
 
    procedure Get_Class (F : File_Type; Item : out Asset) is
    begin
-      Get (F, Item.Class);
+      Get (F, Integer (Item.C));
       Skip_Space (F);
    exception
       when others => raise Program_Error with "Get_Class. Can not get a value at line " & Line (F)'Img & ".";
@@ -70,7 +70,7 @@ package body CBR.Readings is
    begin
       while not End_Of_Line (F) loop
          Get_Point_Element (F, V);
-         Item.Point.Append (V);
+         Item.P.Append (V);
       end loop;
       if not End_Of_File (F) then
          Skip_Line (F);

@@ -1,25 +1,25 @@
 package body CBR is
 
-   procedure Normalize (X : in out Asset_Vector; Min : in out Float_Vector; Max : in out Float_Vector) is
+   procedure Normalize (X : in out Asset_Vector; Min : in out Point; Max : in out Point) is
       use Dev.Math;
    begin
       for E : Asset of X loop
-         Normalize (E.Point, Min, Max);
+         Normalize (E.P, Min, Max);
       end loop;
    end;
 
-   procedure Find_Min_Max (X : Asset_Vector; Min : in out Float_Vector; Max : in out Float_Vector) is
+   procedure Find_Min_Max (X : Asset_Vector; Min : in out Point; Max : in out Point) is
    begin
       for E : Asset of X loop
-         Dev.Math.Find_Min_Max (E.Point, Min, Max);
+         Dev.Math.Find_Min_Max (E.P, Min, Max);
       end loop;
    end;
 
-   procedure Initialize_Min_Max (X : Asset_Vector; Min : in out Float_Vector; Max : in out Float_Vector) is
+   procedure Initialize_Min_Max (X : Asset_Vector; Min : in out Point; Max : in out Point) is
       use Dev.Math.Float_Vectors;
    begin
-      Min := To_Vector (Float'Last, X (1).Point.Length);
-      Max := To_Vector (Float'First, X (1).Point.Length);
+      Min := To_Vector (Float'Last, X (1).P.Length);
+      Max := To_Vector (Float'First, X (1).P.Length);
    end;
 
    procedure Initialize (Item : in out Prominent_Vector; Class_Count : Natural; K_Count : Natural) is
@@ -32,11 +32,11 @@ package body CBR is
       Item := To_Vector (P, Count_Type (K_Count));
    end;
 
-   function Max_Class (Item : Asset_Vector) return Natural is
-      S : Natural := 0;
+   function Max_Class (Item : Asset_Vector) return Class is
+      S : Class := 0;
    begin
       for E : Asset of Item loop
-         S := Natural'Max (S, E.Class);
+         S := Class'Max (S, E.C);
       end loop;
       return S;
    end;
@@ -45,7 +45,7 @@ package body CBR is
       S : Natural := 0;
    begin
       for E : Asset of Item loop
-         S := Natural'Max (S, Natural (E.Point.Length));
+         S := Natural'Max (S, Natural (E.P.Length));
       end loop;
       return S;
    end;
@@ -54,7 +54,7 @@ package body CBR is
       S : Natural := Natural'Last;
    begin
       for E : Asset of Item loop
-         S := Natural'Min (S, Natural (E.Point.Length));
+         S := Natural'Min (S, Natural (E.P.Length));
       end loop;
       return S;
    end;
@@ -86,7 +86,7 @@ package body CBR is
       R : Natural := 0;
    begin
       for E : Asset of Item loop
-         N (E.Class) := N (E.Class) + 1;
+         N (E.C) := N (E.C) + 1;
       end loop;
       for E : Natural of N loop
          if E > 0 then
@@ -112,14 +112,14 @@ package body CBR is
 
 
 
-   procedure Calc_Distance (DB : Asset_Vector; Sample : Asset; Kind : Dev.Math.Distances.Kinds.Kind; W : Float_Vector; D : in out Distance_Info_Vector) is
+   procedure Calc_Distance (DB : Asset_Vector; Sample : Asset; Kind : Dev.Math.Distances.Kinds.Kind; W : Weight_Vector; D : in out Distance_Info_Vector) is
       use Dev.Math;
       X : Distance_Info;
    begin
       for E : Asset of DB loop
-         X.Time := E.Time;
-         X.Class := E.Class;
-         X.Dis := Distances.Selective (E.Point, Sample.Point, W, Kind);
+         X.T := E.T;
+         X.C := E.C;
+         X.Dis := Distances.Selective (E.P, Sample.P, W, Kind);
          D.Append (X);
       end loop;
    end;
@@ -127,19 +127,20 @@ package body CBR is
    procedure Calc_Prominent (D : Distance_Info_Vector; To : in out K_Class_Vector) is
       use Ada.Containers;
       use Class_Counter_Vectors;
+      use K_Class_Vectors;
       S : Class_Counter_Vector;
       M : Integer := -1;
-      T : Natural := 0;
+      T : Class := 0;
       N : constant Count_Type := 10;
    begin
       S := To_Vector (0, N);
       for E : Distance_Info of D loop
-         S (E.Class) := S (E.Class) + 1;
-         if M = S (E.Class) then
+         S (E.C) := S (E.C) + 1;
+         if M = S (E.C) then
             T := 0;
-         elsif M < S (E.Class) then
-            M := S (E.Class);
-            T := E.Class;
+         elsif M < S (E.C) then
+            M := S (E.C);
+            T := E.C;
          end if;
          To.Append (T);
       end loop;
@@ -159,9 +160,9 @@ package body CBR is
       Item := Natural'Succ (Item);
    end;
 
-   procedure Increment (Item : in out Class_Counter_Vector; Class_Increment : Natural) is
+   procedure Increment (Item : in out Class_Counter_Vector; Subject : Class) is
    begin
-      Increment (Item (Class_Increment));
+      Increment (Item (Subject));
    end;
 
    procedure Summarize1 (Estimations : K_Class_Vector; To : in out Prominent_Vector) is

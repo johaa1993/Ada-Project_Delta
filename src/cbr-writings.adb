@@ -6,12 +6,12 @@ package body CBR.Writings is
    use Ada.Integer_Text_IO;
    use Ada.Float_Text_IO;
 
-   procedure Put_Class (F : File_Type; Item : Integer) is
+   procedure Put_Class (F : File_Type; Item : Class) is
    begin
-      Put (F, Item, 4);
+      Put (F, Integer (Item), 4);
    end;
 
-   procedure Put_Point (F : File_Type; Item : Float_Vector) is
+   procedure Put_Point (F : File_Type; Item : Point) is
    begin
       for E of Item loop
          Put (F, " ");
@@ -40,8 +40,8 @@ package body CBR.Writings is
    begin
       Create (F, Out_File, Name);
       for E : Asset of Item loop
-         Put_Class (F, E.Class);
-         Put_Point (F, E.Point);
+         Put_Class (F, E.C);
+         Put_Point (F, E.P);
          New_Line (F);
       end loop;
       Close (F);

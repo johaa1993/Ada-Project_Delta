@@ -36,6 +36,16 @@ package body CBR.Texts is
       Put (Tail ("Point", 8));
    end;
 
+   procedure Put (Item : Class) is
+   begin
+      Put (Integer (Item), 6);
+   end;
+
+   procedure Put (Item : Time) is
+   begin
+      Put (Integer (Item), 6);
+   end;
+
    procedure Put_Prominent (Item : Prominent) is
    begin
       for E of Item.P loop
@@ -46,7 +56,7 @@ package body CBR.Texts is
 
    procedure Put_Point (Item : Asset) is
    begin
-      for E of Item.Point loop
+      for E of Item.P loop
          Put (",");
          Put (E);
       end loop;
@@ -73,8 +83,8 @@ package body CBR.Texts is
       Put_Point_Header;
       New_Line;
       for E : Asset of Item loop
-         Put (E.Time, 6);
-         Put (E.Class, 6);
+         Put (E.T);
+         Put (E.C);
          Put_Point (E);
          New_Line;
       end loop;
@@ -87,16 +97,18 @@ package body CBR.Texts is
       Put_Class_Header;
       New_Line;
       for E : Asset of Item loop
-         Put (E.Time, 6);
-         Put (E.Class, 6);
+         Put (E.T);
+         Put (E.C);
          New_Line;
       end loop;
    end;
 
 
+
+
    procedure Put (Item : Distance_Info) is
    begin
-      Put (Item.Class, 3);
+      Put (Item.C);
       Put (Item.Dis);
    end;
 

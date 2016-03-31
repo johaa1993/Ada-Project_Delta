@@ -30,7 +30,7 @@ begin
       New_Line;
 
       Put (Tail ("Max class count ", 30));
-      Put (Max_Class (X), 5);
+      Put (Max_Class (X));
       New_Line;
 
       Put (Tail ("Unique class count ", 30));

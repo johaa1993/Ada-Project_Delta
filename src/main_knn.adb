@@ -21,7 +21,7 @@ procedure Main_KNN is
    D : Distance_Info_Vector;
    J : Natural;
    DT : Dev.Math.Distances.Kinds.Kind;
-   W : Float_Vector;
+   W : Weight_Vector;
    W0 : Float;
    K : K_Class_Vector;
    P : Prominent_Vector;
@@ -50,7 +50,7 @@ begin
    J := Find_Argument_Asserted ("-k", "Missing k count -k flag");
    KN := Natural'Value (Get_Argument_Value (J + 1));
 
-   Initialize (P, Max_Class (X) + 1, KN);
+   Initialize (P, Integer (Max_Class (X) + 1), KN);
 
    for E of S loop
       D.Set_Length (0);
